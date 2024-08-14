@@ -191,6 +191,16 @@ App = function()
         var playButton = new SceneObject(playButtonSprite);
         playButton.onMouseUp = function()
         {
+	// Initialize AudioContext when the play button is clicked
+            if (!self.audioContext) {
+		try {
+                self.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+		console.log("AudioContext initialized after user interaction.");
+		} catch (e) {
+                    console.error("Web Audio API is not supported in this browser.");
+		}
+	    }
+
             wade.clearScene();
             if(!self.musicMuted)
             {
