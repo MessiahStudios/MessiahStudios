@@ -8,7 +8,7 @@ self.addEventListener('install', event => {
         '/bar.js',
         '/counter.js',
         '/match3.js',
-	'jquery-1.11.1.min.js',
+	'/jquery-1.11.1.min.js',
         '/wade.ifx_1.0.js',
         '/wade.particles_1.0.1.js',
         '/wade_1.5.js',
