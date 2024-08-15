@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     
@@ -13,6 +13,8 @@
     <link rel="manifest" href="manifest.json">
 
     <script>
+        let deferredPrompt;
+
         window.addEventListener('load', function() {
             // Hide the loading screen once everything is loaded
             document.getElementById('loadingScreen').style.display = 'none';
@@ -22,32 +24,27 @@
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
             if (!isStandalone && navigator.onLine) {
-                let deferredPrompt;
                 window.addEventListener('beforeinstallprompt', (e) => {
                     e.preventDefault();
                     deferredPrompt = e;
 
-                    // Show the install button using the provided image
-                    const installButton = document.createElement('img');
-                    installButton.id = 'installButton';
-                    installButton.src = '/divine-gems-game/images/installButton.png'; // Use your install button image
-                    installButton.style.position = 'fixed';
-                    installButton.style.bottom = '10px';
-                    installButton.style.right = '10px';
-                    installButton.style.zIndex = '10000'; // Ensure it is on top of other elements
-                    installButton.style.cursor = 'pointer';
-                    installButton.style.width = '120px';
-                    installButton.style.height = 'auto';
-                    document.body.appendChild(installButton);
+                    // Show the install button in the footer only when the PWA is ready to install
+                    const footerInstallButton = document.getElementById('footerInstallButton');
+                    footerInstallButton.style.display = 'block';
 
-                    installButton.addEventListener('click', async () => {
-                        deferredPrompt.prompt();
-                        const { outcome } = await deferredPrompt.userChoice;
-                        console.log(`User response to the install prompt: ${outcome}`);
-                        deferredPrompt = null;
-                        installButton.style.display = 'none';
+                    footerInstallButton.addEventListener('click', async () => {
+                        if (deferredPrompt) {
+                            deferredPrompt.prompt();
+                            const { outcome } = await deferredPrompt.userChoice;
+                            console.log(`User response to the install prompt: ${outcome}`);
+                            deferredPrompt = null;
+                            footerInstallButton.style.display = 'none';
+                        }
                     });
                 });
+            } else {
+                // If the app is already installed, hide the install button
+                document.getElementById('footerInstallButton').style.display = 'none';
             }
         });
 
@@ -83,13 +80,36 @@
             width: 50px;
             height: 50px;
             border: 5px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #148cb8; /* Updated color for the spinner */
+            border-top-color: #148cb8;
             border-radius: 50%;
             animation: spin 1s ease infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* Footer Styles */
+        footer {
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            z-index: 10000;
+        }
+
+        #footerInstallButton {
+            display: none;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 
@@ -108,5 +128,10 @@
     <div id="loadingScreen">
         <div class="spinner"></div>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <button id="footerInstallButton">Install Divine Gems</button>
+    </footer>
 </body>
 </html>
