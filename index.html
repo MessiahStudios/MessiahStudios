@@ -12,45 +12,84 @@
     <!-- Link to the manifest.json file -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- Combined Script for Loading Screen and PWA Install Button -->
+    <!-- Combined Script for Loading Screen, PWA Install Button, and Update Notification -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Register service worker for offline capabilities
+            // Register service worker
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/divine-gems-game/service-worker.js')
                 .then(registration => {
                     console.log('Service Worker registered with scope:', registration.scope);
+
+                    // Update notification logic for offline users
+                    registration.addEventListener('updatefound', () => {
+                        const installingWorker = registration.installing;
+                        installingWorker.addEventListener('statechange', () => {
+                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                if (!navigator.onLine) {
+                                    // Notify about the update if offline
+                                    let updateNotification = document.createElement('div');
+                                    updateNotification.style.position = 'fixed';
+                                    updateNotification.style.bottom = '20px';
+                                    updateNotification.style.left = '20px';
+                                    updateNotification.style.background = '#ffeb3b';
+                                    updateNotification.style.padding = '10px';
+                                    updateNotification.style.zIndex = '1000';
+                                    updateNotification.style.border = '1px solid #000';
+                                    updateNotification.innerHTML = 
+                                        <p>New version available. <button id="refresh">Refresh</button></p>
+                                    ;
+                                    document.body.appendChild(updateNotification);
+
+                                    document.getElementById('refresh').addEventListener('click', () => {
+                                        if (registration.waiting) {
+                                            registration.waiting.postMessage('skipWaiting');
+                                        }
+                                    });
+
+                                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                                        window.location.reload();
+                                    });
+                                }
+                            }
+                        });
+                    });
                 })
                 .catch(error => {
                     console.error('Service Worker registration failed:', error);
                 });
             }
 
-            // PWA Install Button Logic
-            let deferredPrompt;
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
+            // Check if the app is installed
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-                // Create and show the install button
-                const installButton = document.createElement('button');
-                installButton.id = 'installButton';
-                installButton.textContent = 'Install App';
-                installButton.style.position = 'fixed';
-                installButton.style.bottom = '20px';
-                installButton.style.right = '20px';
-                document.body.appendChild(installButton);
+            // Show install prompt only if the app is not installed and the user is online
+            if (!isStandalone && navigator.onLine) {
+                let deferredPrompt;
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
 
-                installButton.addEventListener('click', async () => {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    console.log(`User response to the install prompt: ${outcome}`);
-                    deferredPrompt = null;
-                    installButton.style.display = 'none';
+                    // Create and show the install button
+                    const installButton = document.createElement('button');
+                    installButton.id = 'installButton';
+                    installButton.textContent = 'Install App';
+                    installButton.style.position = 'fixed';
+                    installButton.style.bottom = '20px';
+                    installButton.style.right = '20px';
+                    document.body.appendChild(installButton);
+
+                    installButton.addEventListener('click', async () => {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(User response to the install prompt: ${outcome});
+                        deferredPrompt = null;
+                        installButton.style.display = 'none';
+                    });
                 });
-            });
+            }
 
-            // Wait for the window to fully load, then hide the loading screen
+            // Hide the loading screen once everything is loaded
             window.addEventListener('load', function() {
                 document.getElementById('loadingScreen').style.display = 'none';
                 wade.init('app.js');
