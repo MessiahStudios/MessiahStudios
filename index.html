@@ -36,9 +36,9 @@
                                     updateNotification.style.padding = '10px';
                                     updateNotification.style.zIndex = '1000';
                                     updateNotification.style.border = '1px solid #000';
-                                    updateNotification.innerHTML = 
+                                    updateNotification.innerHTML = `
                                         <p>New version available. <button id="refresh">Refresh</button></p>
-                                    ;
+                                    `;
                                     document.body.appendChild(updateNotification);
 
                                     document.getElementById('refresh').addEventListener('click', () => {
@@ -59,7 +59,13 @@
                     console.error('Service Worker registration failed:', error);
                 });
             }
+        });
 
+        window.addEventListener('load', function() {
+            // Hide the loading screen once everything is loaded
+            document.getElementById('loadingScreen').style.display = 'none';
+            wade.init('app.js');
+            
             // Check if the app is installed
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
@@ -82,18 +88,12 @@
                     installButton.addEventListener('click', async () => {
                         deferredPrompt.prompt();
                         const { outcome } = await deferredPrompt.userChoice;
-                        console.log(User response to the install prompt: ${outcome});
+                        console.log(`User response to the install prompt: ${outcome}`);
                         deferredPrompt = null;
                         installButton.style.display = 'none';
                     });
                 });
             }
-
-            // Hide the loading screen once everything is loaded
-            window.addEventListener('load', function() {
-                document.getElementById('loadingScreen').style.display = 'none';
-                wade.init('app.js');
-            });
         });
     </script>
 
