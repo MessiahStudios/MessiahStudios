@@ -27,19 +27,14 @@
                     e.preventDefault();
                     deferredPrompt = e;
 
-                    // Show the install button
-                    const installButton = document.createElement('button');
+                    // Show the install button using the provided image
+                    const installButton = document.createElement('img');
                     installButton.id = 'installButton';
-                    installButton.textContent = 'Install App';
+                    installButton.src = '/divine-gems-game/images/installButton.png'; // Use your install button image
                     installButton.style.position = 'fixed';
                     installButton.style.bottom = '20px';
                     installButton.style.right = '20px';
                     installButton.style.zIndex = '10000'; // Ensure it is on top of other elements
-                    installButton.style.padding = '10px 20px';
-                    installButton.style.backgroundColor = '#007bff';
-                    installButton.style.color = '#fff';
-                    installButton.style.border = 'none';
-                    installButton.style.borderRadius = '5px';
                     installButton.style.cursor = 'pointer';
                     document.body.appendChild(installButton);
 
@@ -86,7 +81,7 @@
             width: 50px;
             height: 50px;
             border: 5px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #fff;
+            border-top-color: #148cb8; /* Updated color for the spinner */
             border-radius: 50%;
             animation: spin 1s ease infinite;
         }
