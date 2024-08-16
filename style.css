@@ -10,7 +10,7 @@ html, body
     right: 0;
     bottom: 0;
 	overflow: hidden;
-    z-index: -1000;
+    z-index: -1001;
     background: #000;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     -ms-touch-action: none;
