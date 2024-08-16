@@ -63,13 +63,12 @@
                             const { outcome } = await deferredPrompt.userChoice;
                             console.log(`User response to the install prompt: ${outcome}`);
                             deferredPrompt = null;
-                            footerInstallButton.style.display = 'none';
                             document.getElementById('footer').style.display = 'none'; // Hide footer after installation
                         }
                     });
                 });
             } else {
-                document.getElementById('footer').style.display = 'none';
+                document.getElementById('footer').style.display = 'none'; // Hide the footer if installed
             }
         });
     </script>
@@ -85,7 +84,7 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            z-index: 9999;
+            z-index: 10000; /* Ensure it stays on top */
         }
 
         /* Simple CSS animation for the loading screen */
@@ -118,7 +117,7 @@
             color: white;
             text-align: center;
             padding: 10px 0;
-            z-index: 10000;
+            z-index: 9999; /* Should be above the main content but below loading screen */
             pointer-events: none; /* Prevent footer from blocking interactions */
         }
 
