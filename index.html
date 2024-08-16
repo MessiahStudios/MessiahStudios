@@ -21,7 +21,6 @@
                 .then(registration => {
                     console.log('Service Worker registered with scope:', registration.scope);
 
-                    // Track the service worker's installation progress
                     let serviceWorker = registration.installing;
                     if (serviceWorker) {
                         serviceWorker.addEventListener('statechange', () => {
@@ -130,6 +129,11 @@
             border-radius: 5px;
             cursor: pointer;
             pointer-events: all; /* Allow interactions only with the button */
+        }
+
+        /* Ensure space between app content and footer */
+        #wade_main_div {
+            margin-bottom: 60px; /* Add space for the footer */
         }
     </style>
 
