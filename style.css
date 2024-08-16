@@ -1,33 +1,32 @@
 html, body
 {   
-	width:  100%;
-	height: 100%;
-	margin: auto;
+    width:  100%;
+    height: 100%;
+    margin: auto;
     padding: 0;
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
-	overflow: hidden;
+    overflow: hidden;
     z-index: -1001;
     background: #000;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     -ms-touch-action: none;
-	background-color: #333;
+    background-color: #333;
 }
 
 #wade_main_div
 {
     margin: auto;
     margin-top: 15px; /* Add space for the footer */
-    margin-bottom: 15px; /* Add space for the footer */
     position: absolute;
     padding: 0;
     left: 0;
     top: 15px;
     right: 0;
-    bottom: 15px; /* Space for the footer */
+    bottom: auto; /* Remove fixed bottom margin, handled dynamically */
     border: none;
     outline: none;
     -webkit-backface-visibility: hidden;
@@ -40,7 +39,7 @@ html, body
     -webkit-transform: translate3d(0, 0, 0);
     -o-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
-	background-color: #333;
+    background-color: #333;
 }
 
 canvas
