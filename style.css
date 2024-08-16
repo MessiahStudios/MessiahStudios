@@ -20,6 +20,8 @@ html, body
 #wade_main_div
 {
     margin: auto;
+    margin-top: 15px; /* Add space for the footer */
+    margin-bottom: 15px; /* Add space for the footer */
     position: absolute;
     padding: 0;
     left: 0;
