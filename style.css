@@ -23,9 +23,9 @@ html, body
     position: absolute;
     padding: 0;
     left: 0;
-    top: 5px;
+    top: 15px;
     right: 0;
-    bottom: 5px; /* Space for the footer */
+    bottom: 15px; /* Space for the footer */
     border: none;
     outline: none;
     -webkit-backface-visibility: hidden;
