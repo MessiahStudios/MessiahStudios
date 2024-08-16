@@ -63,13 +63,12 @@
                             const { outcome } = await deferredPrompt.userChoice;
                             console.log(`User response to the install prompt: ${outcome}`);
                             deferredPrompt = null;
-                            footerInstallButton.style.display = 'none';
+                            document.getElementById('footer').style.display = 'none'; // Hide footer after installation
                         }
                     });
                 });
             } else {
-                document.getElementById('footerInstallButton').style.display = 'none';
-                document.getElementById('footer').style.display = 'none'; // Hide footer if app is installed
+                document.getElementById('footer').style.display = 'none'; // Hide the footer if installed
             }
         });
     </script>
@@ -80,12 +79,12 @@
             position: fixed;
             width: 100%;
             height: 100%;
-            background: #000;
+            background: #111; /* Slightly lighter background to ensure spinner is visible */
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            z-index: 10001; /* Ensure it's above other elements */
+            z-index: 10000; /* Ensure it stays on top */
         }
 
         /* Simple CSS animation for the loading screen */
@@ -96,6 +95,12 @@
             border-top-color: #148cb8;
             border-radius: 50%;
             animation: spin 1s ease infinite;
+        }
+
+        #progressText {
+            margin-top: 10px;
+            color: #fff;
+            font-family: Arial, sans-serif;
         }
 
         @keyframes spin {
@@ -112,7 +117,8 @@
             color: white;
             text-align: center;
             padding: 10px 0;
-            z-index: 10000; /* Keep it above the game canvas */
+            z-index: 9999; /* Should be above the main content but below loading screen */
+            pointer-events: none; /* Prevent footer from blocking interactions */
         }
 
         #footerInstallButton {
@@ -123,6 +129,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            pointer-events: all; /* Allow interactions only with the button */
         }
     </style>
 
