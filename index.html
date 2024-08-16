@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-Compatible" content="IE=edge" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     
@@ -15,12 +15,38 @@
     <script>
         let deferredPrompt;
 
+        document.addEventListener('DOMContentLoaded', function () {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/divine-gems-game/service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+
+                    // Track the service worker's installation progress
+                    let serviceWorker = registration.installing;
+                    if (serviceWorker) {
+                        serviceWorker.addEventListener('statechange', () => {
+                            if (serviceWorker.state === 'installed') {
+                                document.getElementById('loadingScreen').style.display = 'none';
+                                wade.init('app.js');
+                            }
+                        });
+                    } else {
+                        document.getElementById('loadingScreen').style.display = 'none';
+                        wade.init('app.js');
+                    }
+                })
+                .catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    wade.init('app.js');
+                });
+            } else {
+                document.getElementById('loadingScreen').style.display = 'none';
+                wade.init('app.js');
+            }
+        });
+
         window.addEventListener('load', function() {
-            // Hide the loading screen once everything is loaded
-            document.getElementById('loadingScreen').style.display = 'none';
-            wade.init('app.js');
-            
-            // Check if the app is installed
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
             if (!isStandalone && navigator.onLine) {
@@ -28,7 +54,6 @@
                     e.preventDefault();
                     deferredPrompt = e;
 
-                    // Show the install button in the footer only when the PWA is ready to install
                     const footerInstallButton = document.getElementById('footerInstallButton');
                     footerInstallButton.style.display = 'block';
 
@@ -43,21 +68,7 @@
                     });
                 });
             } else {
-                // If the app is already installed, hide the install button
                 document.getElementById('footerInstallButton').style.display = 'none';
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            // Register service worker
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/divine-gems-game/service-worker.js')
-                .then(registration => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                })
-                .catch(error => {
-                    console.error('Service Worker registration failed:', error);
-                });
             }
         });
     </script>
@@ -72,6 +83,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
             z-index: 9999;
         }
 
@@ -127,6 +139,7 @@
     <!-- Loading Screen -->
     <div id="loadingScreen">
         <div class="spinner"></div>
+        <div id="progressText">Loading assets...</div>
     </div>
 
     <!-- Footer Section -->
