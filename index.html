@@ -64,11 +64,12 @@
                             console.log(`User response to the install prompt: ${outcome}`);
                             deferredPrompt = null;
                             footerInstallButton.style.display = 'none';
+                            document.getElementById('footer').style.display = 'none'; // Hide footer after installation
                         }
                     });
                 });
             } else {
-                document.getElementById('footerInstallButton').style.display = 'none';
+                document.getElementById('footer').style.display = 'none';
             }
         });
     </script>
@@ -118,6 +119,7 @@
             text-align: center;
             padding: 10px 0;
             z-index: 10000;
+            pointer-events: none; /* Prevent footer from blocking interactions */
         }
 
         #footerInstallButton {
@@ -128,6 +130,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            pointer-events: all; /* Allow interactions only with the button */
         }
     </style>
 
@@ -149,7 +152,7 @@
     </div>
 
     <!-- Footer Section -->
-    <footer>
+    <footer id="footer">
         <button id="footerInstallButton">Install Divine Gems</button>
     </footer>
 </body>
