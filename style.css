@@ -14,7 +14,7 @@ html, body
     background: #000;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     -ms-touch-action: none;
-	background-color: grey;
+	background-color: #333;
 }
 
 #wade_main_div
