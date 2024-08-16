@@ -15,58 +15,77 @@
     <script>
         let deferredPrompt;
 
+        // Add logging function
+        function logEvent(message) {
+            console.log(`[Divine Gems Log] ${message}`);
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
+            logEvent('DOMContentLoaded event fired');
             if ('serviceWorker' in navigator) {
+                logEvent('Service Worker supported');
                 navigator.serviceWorker.register('/divine-gems-game/service-worker.js')
                 .then(registration => {
-                    console.log('Service Worker registered with scope:', registration.scope);
+                    logEvent('Service Worker registered with scope: ' + registration.scope);
 
+                    // Track the service worker's installation progress
                     let serviceWorker = registration.installing;
                     if (serviceWorker) {
+                        logEvent('Service Worker is installing');
                         serviceWorker.addEventListener('statechange', () => {
+                            logEvent('Service Worker state: ' + serviceWorker.state);
                             if (serviceWorker.state === 'installed') {
+                                logEvent('Service Worker installed');
                                 document.getElementById('loadingScreen').style.display = 'none';
                                 wade.init('app.js');
                             }
                         });
                     } else {
+                        logEvent('No installing Service Worker found');
                         document.getElementById('loadingScreen').style.display = 'none';
                         wade.init('app.js');
                     }
                 })
                 .catch(error => {
-                    console.error('Service Worker registration failed:', error);
+                    logEvent('Service Worker registration failed: ' + error);
                     document.getElementById('loadingScreen').style.display = 'none';
                     wade.init('app.js');
                 });
             } else {
+                logEvent('Service Worker not supported');
                 document.getElementById('loadingScreen').style.display = 'none';
                 wade.init('app.js');
             }
         });
 
         window.addEventListener('load', function() {
+            logEvent('Window load event fired');
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            logEvent('Standalone mode: ' + isStandalone);
 
             if (!isStandalone && navigator.onLine) {
+                logEvent('App not installed and user is online');
                 window.addEventListener('beforeinstallprompt', (e) => {
                     e.preventDefault();
                     deferredPrompt = e;
+                    logEvent('beforeinstallprompt event triggered');
 
                     const footerInstallButton = document.getElementById('footerInstallButton');
                     footerInstallButton.style.display = 'block';
 
                     footerInstallButton.addEventListener('click', async () => {
                         if (deferredPrompt) {
+                            logEvent('Install button clicked');
                             deferredPrompt.prompt();
                             const { outcome } = await deferredPrompt.userChoice;
-                            console.log(`User response to the install prompt: ${outcome}`);
+                            logEvent(`User response to the install prompt: ${outcome}`);
                             deferredPrompt = null;
                             document.getElementById('footer').style.display = 'none'; // Hide footer after installation
                         }
                     });
                 });
             } else {
+                logEvent('App is already installed or user is offline');
                 document.getElementById('footer').style.display = 'none'; // Hide the footer if installed
             }
         });
@@ -130,12 +149,6 @@
             cursor: pointer;
             pointer-events: all; /* Allow interactions only with the button */
         }
-
-        /* Ensure space between app content and footer */
-        #wade_main_div {
-            margin-top: 15px; /* Add space for the footer */
-            margin-bottom: 15px; /* Add space for the footer */
-        }
     </style>
 
     <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
@@ -145,7 +158,7 @@
 </head>
 
 <body>
-    <div id="container" style="border:0; width:800px; height:615px;">
+    <div id="container" style="border:0; width:800px; height:600px;">
         <div id="wade_main_div" width="800" height="600" tabindex="1"></div>
     </div>
 
