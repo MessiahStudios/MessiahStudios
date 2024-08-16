@@ -14,7 +14,7 @@ html, body
     background: #000;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     -ms-touch-action: none;
-	background-color:grey;
+	background-color: grey;
 }
 
 /* #socialAPIs
@@ -47,7 +47,6 @@ html, body
     -o-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
 	background-color:#000000;
-    
 }
 
 canvas
