@@ -17,14 +17,6 @@ html, body
 	background-color: grey;
 }
 
-/* #socialAPIs
-{
-	z-index:1;
-	width:100%;
-	position: absolute;
-	top:0;
-	
-} */
 #wade_main_div
 {
     margin: auto;
@@ -46,7 +38,7 @@ html, body
     -webkit-transform: translate3d(0, 0, 0);
     -o-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
-	background-color:#000000;
+	background-color: #000000;
 }
 
 canvas
