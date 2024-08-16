@@ -15,80 +15,71 @@
     <script>
         let deferredPrompt;
 
-        // Add logging function
-        function logEvent(message) {
-            console.log(`[Divine Gems Log] ${message}`);
-        }
-
         document.addEventListener('DOMContentLoaded', function () {
-            logEvent('DOMContentLoaded event fired');
             if ('serviceWorker' in navigator) {
-                logEvent('Service Worker supported');
                 navigator.serviceWorker.register('/divine-gems-game/service-worker.js')
                 .then(registration => {
-                    logEvent('Service Worker registered with scope: ' + registration.scope);
+                    console.log('Service Worker registered with scope:', registration.scope);
 
-                    // Track the service worker's installation progress
                     let serviceWorker = registration.installing;
                     if (serviceWorker) {
-                        logEvent('Service Worker is installing');
                         serviceWorker.addEventListener('statechange', () => {
-                            logEvent('Service Worker state: ' + serviceWorker.state);
                             if (serviceWorker.state === 'installed') {
-                                logEvent('Service Worker installed');
                                 document.getElementById('loadingScreen').style.display = 'none';
                                 wade.init('app.js');
                             }
                         });
                     } else {
-                        logEvent('No installing Service Worker found');
                         document.getElementById('loadingScreen').style.display = 'none';
                         wade.init('app.js');
                     }
                 })
                 .catch(error => {
-                    logEvent('Service Worker registration failed: ' + error);
+                    console.error('Service Worker registration failed:', error);
                     document.getElementById('loadingScreen').style.display = 'none';
                     wade.init('app.js');
                 });
             } else {
-                logEvent('Service Worker not supported');
                 document.getElementById('loadingScreen').style.display = 'none';
                 wade.init('app.js');
             }
         });
 
         window.addEventListener('load', function() {
-            logEvent('Window load event fired');
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-            logEvent('Standalone mode: ' + isStandalone);
 
             if (!isStandalone && navigator.onLine) {
-                logEvent('App not installed and user is online');
                 window.addEventListener('beforeinstallprompt', (e) => {
                     e.preventDefault();
                     deferredPrompt = e;
-                    logEvent('beforeinstallprompt event triggered');
 
                     const footerInstallButton = document.getElementById('footerInstallButton');
                     footerInstallButton.style.display = 'block';
 
                     footerInstallButton.addEventListener('click', async () => {
                         if (deferredPrompt) {
-                            logEvent('Install button clicked');
                             deferredPrompt.prompt();
                             const { outcome } = await deferredPrompt.userChoice;
-                            logEvent(`User response to the install prompt: ${outcome}`);
+                            console.log(`User response to the install prompt: ${outcome}`);
                             deferredPrompt = null;
                             document.getElementById('footer').style.display = 'none'; // Hide footer after installation
                         }
                     });
                 });
             } else {
-                logEvent('App is already installed or user is offline');
                 document.getElementById('footer').style.display = 'none'; // Hide the footer if installed
             }
         });
+
+        // Adjust main content height based on footer
+        window.addEventListener('resize', adjustMainContentHeight);
+        window.addEventListener('load', adjustMainContentHeight);
+
+        function adjustMainContentHeight() {
+            const footerHeight = document.getElementById('footer').offsetHeight;
+            const wadeMainDiv = document.getElementById('wade_main_div');
+            wadeMainDiv.style.marginBottom = `${footerHeight + 15}px`;
+        }
     </script>
 
     <style>
@@ -97,12 +88,12 @@
             position: fixed;
             width: 100%;
             height: 100%;
-            background: #111; /* Slightly lighter background to ensure spinner is visible */
+            background: rgba(0, 0, 0, 0.8); /* Ensure spinner is visible with a semi-transparent background */
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            z-index: 10000; /* Ensure it stays on top */
+            z-index: 9999; /* Ensure it stays on top of all content */
         }
 
         /* Simple CSS animation for the loading screen */
@@ -119,6 +110,7 @@
             margin-top: 10px;
             color: #fff;
             font-family: Arial, sans-serif;
+            z-index: 10000; /* Make sure text is visible */
         }
 
         @keyframes spin {
@@ -135,7 +127,7 @@
             color: white;
             text-align: center;
             padding: 10px 0;
-            z-index: 9999; /* Should be above the main content but below loading screen */
+            z-index: 9998; /* Should be above the main content but below loading screen */
             pointer-events: none; /* Prevent footer from blocking interactions */
         }
 
@@ -158,7 +150,7 @@
 </head>
 
 <body>
-    <div id="container" style="border:0; width:800px; height:600px;">
+    <div id="container" style="border:0; width:800px; height:615px;">
         <div id="wade_main_div" width="800" height="600" tabindex="1"></div>
     </div>
 
