@@ -13,6 +13,8 @@ const FILES_TO_CACHE = [
   '/divine-gems-game/wade.ifx_1.0.js',
   '/divine-gems-game/wade.particles_1.0.1.js',
   '/divine-gems-game/wade_1.5.js',
+  '/divine-gems-game/loadingScreen.js',  // Add this line
+  '/divine-gems-game/install.js',        // Add this line
   // Include all the fonts
   '/divine-gems-game/fonts/Akashi.eot',
   '/divine-gems-game/fonts/Akashi.svg',
