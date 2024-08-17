@@ -8,7 +8,84 @@
     
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Messiah Studios | Divine Gems</title>
+    
+    <!-- Link to the manifest.json file -->
     <link rel="manifest" href="manifest.json">
+
+    <script>
+        let deferredPrompt;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/divine-gems-game/service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+
+                    let serviceWorker = registration.installing;
+                    if (serviceWorker) {
+                        serviceWorker.addEventListener('statechange', () => {
+                            if (serviceWorker.state === 'installed') {
+                                document.getElementById('loadingScreen').style.display = 'none';
+                                wade.init('app.js');
+                            }
+                        });
+                    } else {
+                        document.getElementById('loadingScreen').style.display = 'none';
+                        wade.init('app.js');
+                    }
+                })
+                .catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    wade.init('app.js');
+                });
+            } else {
+                document.getElementById('loadingScreen').style.display = 'none';
+                wade.init('app.js');
+            }
+        });
+
+        window.addEventListener('load', function() {
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+            if (!isStandalone && navigator.onLine) {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
+
+                    const footerInstallButton = document.getElementById('footerInstallButton');
+                    footerInstallButton.style.display = 'block';
+
+                    footerInstallButton.addEventListener('click', async () => {
+                        if (deferredPrompt) {
+                            deferredPrompt.prompt();
+                            const { outcome } = await deferredPrompt.userChoice;
+                            console.log(User response to the install prompt: ${outcome});
+                            deferredPrompt = null;
+                            document.getElementById('footer').style.display = 'none'; // Hide footer after installation
+                        }
+                    });
+                });
+            } else {
+                document.getElementById('footer').style.display = 'none'; // Hide the footer if installed
+            }
+        });
+
+        // Adjust main content height based on footer
+        window.addEventListener('resize', adjustMainContentHeight);
+        window.addEventListener('load', adjustMainContentHeight);
+
+        function adjustMainContentHeight() {
+            const footerHeight = document.getElementById('footer').offsetHeight;
+            const wadeMainDiv = document.getElementById('wade_main_div');
+            wadeMainDiv.style.marginBottom = ${footerHeight + 15}px;
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="wade_1.5.js"></script>
+    <script src="wade.ifx_1.0.js"></script>
+    <script src="wade.particles_1.0.1.js"></script>
 </head>
 
 <body>
@@ -21,17 +98,10 @@
         <div class="spinner"></div>
         <div id="progressText">Loading assets...</div>
     </div>
-
+<br>
+    <!-- Footer Section -->
     <footer id="footer">
         <button id="footerInstallButton">Install Divine Gems</button>
     </footer>
-
-    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="wade_1.5.js"></script>
-    <script src="wade.ifx_1.0.js"></script>
-    <script src="wade.particles_1.0.1.js"></script>
-    <script src="app.js"></script>
-    <script src="loadingScreen.js"></script>
-    <script src="install.js"></script>
 </body>
 </html>
