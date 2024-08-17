@@ -25,6 +25,8 @@ html, body
 
 canvas
 {
+    max-width: 100%;
+    max-height: auto;
     margin: 0 auto;
     position: relative;
     width: 100%;
@@ -152,17 +154,3 @@ footer {
         height: auto;
         padding: 10px;
     }
-
-    canvas {
-        max-width: 100%;
-        max-height: auto;
-    }
-
-    footer {
-        padding: 8px 0;
-    }
-
-    #footerInstallButton {
-        padding: 8px 16px;
-    }
-}
