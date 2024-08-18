@@ -21,7 +21,10 @@
                 })
                 .catch(error => {
                     console.error('Service Worker registration failed:', error);
+                    wade.init('app.js'); // Fallback to loading app.js directly if service worker fails
                 });
+            } else {
+                wade.init('app.js'); // Fallback to loading app.js directly if service worker is not supported
             }
         });
 
@@ -50,7 +53,7 @@
     <!-- Loading Screen -->
     <div id="loadingScreen">
         <div class="spinner"></div>
-        <div id="progressText">Loading assets...</div>
+        <div id="progressText">Loading assets... 0%</div>
     </div>
 
     <!-- Footer Section -->
@@ -64,7 +67,17 @@
     <!-- Include the install.js script to handle PWA installation prompt -->
     <script src="install.js"></script>
 
-    <!-- Include app.js which contains the game logic -->
-    <script src="app.js"></script> <!-- Ensure this is loaded after loadingScreen.js -->
+    <!-- Include app.js to ensure it loads if all else fails -->
+    <script>
+        // Fallback mechanism to load app.js if the page is fully loaded and the service worker isn't working
+        window.addEventListener('load', function() {
+            if (!navigator.serviceWorker.controller) {
+                wade.init('app.js');
+            }
+        });
+    </script>
+
+    <!-- Explicit app.js load -->
+    <script src="app.js"></script>
 </body>
 </html>
