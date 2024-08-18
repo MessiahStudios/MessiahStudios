@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
             currentPercentage++;
         } else {
             clearInterval(interval);
-            loadingScreen.style.display = 'none';
+            loadingScreen.style.display = 'none'; // Hide the loading screen
+            loadingScreen.remove(); // Remove the loading screen from the DOM to avoid it blocking the view
             wade.init('app.js'); // Initialize the game after loading is complete
         }
     }
@@ -27,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ensure that the game starts after the full duration, even if something goes wrong with the interval
     setTimeout(() => {
         clearInterval(interval);
-        loadingScreen.style.display = 'none';
+        loadingScreen.style.display = 'none'; // Hide the loading screen
+        loadingScreen.remove(); // Remove the loading screen from the DOM
         wade.init('app.js');
     }, totalDuration);
 });
