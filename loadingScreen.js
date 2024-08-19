@@ -18,19 +18,21 @@ window.addEventListener('load', function() {
         }
     }
 
-    // Function to hide the loading screen and initialize app.js if not already initialized
+    // Function to hide the loading screen without initiating app.js
     function hideLoadingScreen() {
         loadingScreen.style.display = 'none';
         loadingScreen.remove();
-
-        if (typeof wade === 'object' && typeof wade.init === 'function' && !wade.isInitialized) {
-            wade.init('app.js');
-            wade.isInitialized = true; // Mark that the app has been initialized
-        }
     }
 
     const interval = setInterval(updateProgress, updateInterval);
 
+    // Ensure that the loading screen is hidden once the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        clearInterval(interval);
+        hideLoadingScreen();
+    });
+
+    // As a fallback, hide the loading screen after the maximum duration
     setTimeout(() => {
         clearInterval(interval);
         hideLoadingScreen();
