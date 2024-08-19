@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     
@@ -12,38 +12,46 @@
     <!-- Link to the manifest.json file -->
     <link rel="manifest" href="manifest.json">
 
+    <!-- Register service worker for offline capabilities -->
     <script>
-        let deferredPrompt;
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/divine-gems-game/service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(error => {
+                console.error('Service Worker registration failed:', error);
+            });
+        }
+    </script>
 
-        document.addEventListener('DOMContentLoaded', function () {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/divine-gems-game/service-worker.js')
-                .then(registration => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-
-                    let serviceWorker = registration.installing;
-                    if (serviceWorker) {
-                        serviceWorker.addEventListener('statechange', () => {
-                            if (serviceWorker.state === 'installed') {
-                                document.getElementById('loadingScreen').style.display = 'none';
-                                wade.init('app.js');
-                            }
-                        });
-                    } else {
-                        document.getElementById('loadingScreen').style.display = 'none';
-                        wade.init('app.js');
-                    }
-                })
-                .catch(error => {
-                    console.error('Service Worker registration failed:', error);
-                    document.getElementById('loadingScreen').style.display = 'none';
-                    wade.init('app.js');
-                });
-            } else {
-                document.getElementById('loadingScreen').style.display = 'none';
-                wade.init('app.js');
-            }
+    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="wade_1.5.js"></script>
+    <script src="wade.ifx_1.0.js"></script>
+    <script src="wade.particles_1.0.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log("DOM is fully loaded and parsed");
+            wade.init('app.js');
         });
+    </script>
+</head>
+
+<body>    
+    <div id="container" style="border:0; width:800px; height:600px;">
+        <div id="wade_main_div" width="800" height="600" tabindex="1"></div>
+    </div>
+
+    <div id="chromeFix">.</div>
+    <div id="chromeFix2">.</div>
+
+    <!-- Footer Section -->
+    <footer id="footer">
+        <button id="footerInstallButton">Install Divine Gems</button>
+    </footer>
+
+    <script>
+        let deferredPrompt; // Declare deferredPrompt globally
 
         window.addEventListener('load', function() {
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -81,27 +89,5 @@
             wadeMainDiv.style.marginBottom = `${footerHeight + 15}px`;  // Use backticks here
         }
     </script>
-
-    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="wade_1.5.js"></script>
-    <script src="wade.ifx_1.0.js"></script>
-    <script src="wade.particles_1.0.1.js"></script>
-</head>
-
-<body>
-    <div id="container" style="border:0; width:800px; height:615px;">
-        <div id="wade_main_div" width="800" height="600" tabindex="1"></div>
-    </div>
-
-    <!-- Loading Screen -->
-    <div id="loadingScreen">
-        <div class="spinner"></div>
-        <div id="progressText">Loading assets...</div>
-    </div>
-<br>
-    <!-- Footer Section -->
-    <footer id="footer">
-        <button id="footerInstallButton">Install Divine Gems</button>
-    </footer>
 </body>
 </html>
