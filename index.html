@@ -60,7 +60,7 @@
                         if (deferredPrompt) {
                             deferredPrompt.prompt();
                             const { outcome } = await deferredPrompt.userChoice;
-                            console.log('User response to the install prompt: ${outcome}');
+                            console.log(`User response to the install prompt: ${outcome}`);
                             deferredPrompt = null;
                             document.getElementById('footer').style.display = 'none'; // Hide footer after installation
                         }
@@ -78,7 +78,7 @@
         function adjustMainContentHeight() {
             const footerHeight = document.getElementById('footer').offsetHeight;
             const wadeMainDiv = document.getElementById('wade_main_div');
-            wadeMainDiv.style.marginBottom = ${footerHeight + 15}px;
+            wadeMainDiv.style.marginBottom = `${footerHeight + 15}px`;  // Use backticks here
         }
     </script>
 
