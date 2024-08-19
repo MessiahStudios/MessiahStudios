@@ -1,12 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Show the loading screen
+window.addEventListener('load', function() {
     const loadingScreen = document.getElementById('loadingScreen');
     const progressText = document.getElementById('progressText');
     loadingScreen.style.display = 'flex';
 
-    // Set the total time for the countdown (3 minutes = 180 seconds)
     const totalDuration = 180 * 1000; // 180 seconds in milliseconds
-    const updateInterval = 1800; // Update every 1.8 seconds for a smoother transition
+    const updateInterval = 1800;
     let currentPercentage = 0;
 
     // Function to update the percentage on the screen
@@ -16,20 +14,25 @@ document.addEventListener('DOMContentLoaded', function() {
             currentPercentage++;
         } else {
             clearInterval(interval);
-            loadingScreen.style.display = 'none'; // Hide the loading screen
-            loadingScreen.remove(); // Remove the loading screen from the DOM to avoid it blocking the view
-            wade.init('app.js'); // Initialize the game after loading is complete
+            hideLoadingScreen();
         }
     }
 
-    // Start updating the progress
+    // Function to hide the loading screen and initialize app.js if not already initialized
+    function hideLoadingScreen() {
+        loadingScreen.style.display = 'none';
+        loadingScreen.remove();
+
+        if (typeof wade === 'object' && typeof wade.init === 'function' && !wade.isInitialized) {
+            wade.init('app.js');
+            wade.isInitialized = true; // Mark that the app has been initialized
+        }
+    }
+
     const interval = setInterval(updateProgress, updateInterval);
 
-    // Ensure that the game starts after the full duration, even if something goes wrong with the interval
     setTimeout(() => {
         clearInterval(interval);
-        loadingScreen.style.display = 'none'; // Hide the loading screen
-        loadingScreen.remove(); // Remove the loading screen from the DOM
-        wade.init('app.js');
+        hideLoadingScreen();
     }, totalDuration);
 });
