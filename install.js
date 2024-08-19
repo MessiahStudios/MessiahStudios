@@ -9,19 +9,24 @@ window.addEventListener('load', function() {
             deferredPrompt = e;
 
             const footerInstallButton = document.getElementById('footerInstallButton');
-            footerInstallButton.style.display = 'block';
+            if (footerInstallButton) {
+                footerInstallButton.style.display = 'block';
 
-            footerInstallButton.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    console.log(`User response to the install prompt: ${outcome}`);
-                    deferredPrompt = null;
-                    document.getElementById('footer').style.display = 'none'; // Hide footer after installation
-                }
-            });
+                footerInstallButton.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(`User response to the install prompt: ${outcome}`);
+                        deferredPrompt = null;
+                        document.getElementById('footer').style.display = 'none'; // Hide footer after installation
+                    }
+                });
+            }
         });
     } else {
-        document.getElementById('footer').style.display = 'none'; // Hide the footer if installed
+        const footer = document.getElementById('footer');
+        if (footer) {
+            footer.style.display = 'none'; // Hide the footer if installed
+        }
     }
 });
