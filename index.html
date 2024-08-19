@@ -31,64 +31,18 @@
     <script src="wade.particles_1.0.1.js"></script>
     <script>
         $(document).ready(function() {
-            console.log("DOM is fully loaded and parsed");
             wade.init('app.js');
         });
     </script>
-    <script src="loadingScreen.js"></script>
 </head>
 
-<body>    
+<body>
+    
     <div id="container" style="border:0; width:800px; height:600px;">
         <div id="wade_main_div" width="800" height="600" tabindex="1"></div>
     </div>
 
     <div id="chromeFix">.</div>
     <div id="chromeFix2">.</div>
-
-    <!-- Footer Section -->
-    <footer id="footer">
-        <button id="footerInstallButton">Install Divine Gems</button>
-    </footer>
-
-    <script>
-        let deferredPrompt; // Declare deferredPrompt globally
-
-        window.addEventListener('load', function() {
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-            if (!isStandalone && navigator.onLine) {
-                window.addEventListener('beforeinstallprompt', (e) => {
-                    e.preventDefault();
-                    deferredPrompt = e;
-
-                    const footerInstallButton = document.getElementById('footerInstallButton');
-                    footerInstallButton.style.display = 'block';
-
-                    footerInstallButton.addEventListener('click', async () => {
-                        if (deferredPrompt) {
-                            deferredPrompt.prompt();
-                            const { outcome } = await deferredPrompt.userChoice;
-                            console.log(`User response to the install prompt: ${outcome}`);
-                            deferredPrompt = null;
-                            document.getElementById('footer').style.display = 'none'; // Hide footer after installation
-                        }
-                    });
-                });
-            } else {
-                document.getElementById('footer').style.display = 'none'; // Hide the footer if installed
-            }
-        });
-
-        // Adjust main content height based on footer
-        window.addEventListener('resize', adjustMainContentHeight);
-        window.addEventListener('load', adjustMainContentHeight);
-
-        function adjustMainContentHeight() {
-            const footerHeight = document.getElementById('footer').offsetHeight;
-            const wadeMainDiv = document.getElementById('wade_main_div');
-            wadeMainDiv.style.marginBottom = `${footerHeight + 15}px`;  // Use backticks here
-        }
-    </script>
 </body>
 </html>
