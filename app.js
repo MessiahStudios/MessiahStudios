@@ -137,7 +137,7 @@ App = function()
     };
 
     // Loading
-    this.init = function() {
+    this.loadingBar = function() {
         // Check if all assets are loaded
         var loadingInterval = setInterval(function() {
             var percentage = wade.getLoadingPercentage();
