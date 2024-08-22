@@ -136,7 +136,7 @@ App = function()
 
     };
 
-    // Enter main program
+    // Loading
     this.init = function() {
         // Check if all assets are loaded
         var loadingInterval = setInterval(function() {
@@ -145,14 +145,14 @@ App = function()
             if (percentage >= 100) {
                 clearInterval(loadingInterval);
                 wade.setLoadingBar(false);  // Hide the loading bar
-                self.startGame();  // Proceed to game initialization
+                self.init();  // Proceed to game initialization
             }
         }, 100);  // Check every 100ms
 
         this.load();  // Start loading assets
     };
-	
-    this.startGame = function()
+	// Enter main program
+    this.init = function()
     {
         // Setup screen
         wade.setMinScreenSize(608, 920); //996
@@ -838,3 +838,6 @@ App = function()
 };
 
 //@ sourceURL=app.js
+// Start the app
+var app = new App();
+app.loadingBar();  // Start the loading process
