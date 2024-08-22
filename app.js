@@ -55,6 +55,12 @@ App = function()
     // Load all assets
     this.load = function()
     {
+	    // Set a stack of loading images
+        wade.setLoadingImages(['images/divineGemsTitle.png'', 'images/background.png']);
+        
+        // Optionally, display a loading bar
+        wade.setLoadingBar(true, {x: 0, y: 150}, '#000000', '#ffffff');
+
         // LOAD SCRIPTS
         wade.loadScript('bar.js');
         wade.loadScript('counter.js');
@@ -131,7 +137,22 @@ App = function()
     };
 
     // Enter main program
-    this.init = function()
+    this.init = function() {
+        // Check if all assets are loaded
+        var loadingInterval = setInterval(function() {
+            var percentage = wade.getLoadingPercentage();
+
+            if (percentage >= 100) {
+                clearInterval(loadingInterval);
+                wade.setLoadingBar(false);  // Hide the loading bar
+                self.startGame();  // Proceed to game initialization
+            }
+        }, 100);  // Check every 100ms
+
+        this.load();  // Start loading assets
+    };
+	
+    this.startGame = function()
     {
         // Setup screen
         wade.setMinScreenSize(608, 920); //996
