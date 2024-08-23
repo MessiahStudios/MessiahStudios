@@ -56,7 +56,7 @@ App = function()
     this.load = function()
     {
 	    // Set a stack of loading images
-        wade.setLoadingImages(['images/divineGemsTitle.png', 'images/background.png']);
+        wade.setLoadingImages(['images/divineGemsTitle.png']);
         
         // Optionally, display a loading bar
         wade.setLoadingBar(true, {x: 0, y: 150}, '#000000', '#ffffff');
