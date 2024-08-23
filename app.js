@@ -147,6 +147,7 @@ App = function()
             if (percentage >= 100) {
                 clearInterval(loadingInterval);
                 wade.setLoadingBar(false);  // Hide the loading bar
+		document.getElementById('__wade_loading_bar').style.display = 'none';
                 self.init();  // Proceed to game initialization
             }
         }, 100);  // Check every 100ms
