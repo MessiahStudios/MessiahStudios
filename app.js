@@ -125,14 +125,14 @@ App = function()
         wade.loadImage('images/flash.png');
 
         // Share
-        wade.loadImage('images/gp_R.png');
+        //wade.loadImage('images/gp_R.png'); //legacy social media outlet
         wade.loadImage('images/fb_R.png');
         wade.loadImage('images/t_R.png');
-		wade.loadImage('images/inst_R.png');
-		wade.loadImage('images/yt_R.png');
-		wade.loadImage('images/vlog_R.png');
-		wade.loadImage('images/imdb_R.png');
-		wade.loadImage('images/li_R.png');
+	wade.loadImage('images/inst_R.png');
+	wade.loadImage('images/yt_R.png');
+	//wade.loadImage('images/vlog_R.png'); //legacy social media outlet
+	wade.loadImage('images/imdb_R.png');
+	wade.loadImage('images/li_R.png');
 
     };
 
@@ -338,6 +338,8 @@ App = function()
             // Create share buttons if social flag set
             if(self.socialEnabled)
             {
+		/*
+  		//old social media outlet
                 var google = new Sprite('images/gp_R.png', self.layers.front);
                 google.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
                 var googleObj = new SceneObject(google);
@@ -347,6 +349,7 @@ App = function()
                 };
                 googleObj.setPosition(-wade.getScreenWidth()/2 + 65, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(googleObj, true);
+		*/
 				
 				var instagram = new Sprite('images/inst_R.png', self.layers.front);
                 instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
@@ -435,7 +438,9 @@ App = function()
 		// Create share buttons if social flag set
                     if(self.socialEnabled)
                     {
-						var vlog = new Sprite('images/vlog_R.png', self.layers.front);
+			/*
+  			//old social media outlet
+			var vlog = new Sprite('images/vlog_R.png', self.layers.front);
                         vlog.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, vlog.getDrawFunction()));
                         var vlogObj = new SceneObject(vlog);
                         vlogObj.onMouseUp = function()
@@ -454,16 +459,17 @@ App = function()
                         };
                         googleObj.setPosition(-125, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(googleObj, true);
+			*/
 						
-						var instagram = new Sprite('images/inst_R.png', self.layers.front);
-						instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
-						var instagramObj = new SceneObject(instagram);
-						instagramObj.onMouseUp = function()
-						{
-							open('https://www.instagram.com/messiahstudios/?hl=en', '_blank');
-						};
-						instagramObj.setPosition(-75, -wade.getScreenHeight()/2 + 225);
-						wade.addSceneObject(instagramObj, true);
+			var instagram = new Sprite('images/inst_R.png', self.layers.front);
+			instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
+			var instagramObj = new SceneObject(instagram);
+			instagramObj.onMouseUp = function()
+			{
+				open('https://www.instagram.com/messiahstudios/?hl=en', '_blank');
+			};
+			instagramObj.setPosition(-75, -wade.getScreenHeight()/2 + 225);
+			wade.addSceneObject(instagramObj, true);
 
                         var facebook = new Sprite('images/fb_R.png', self.layers.front);
                         facebook.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, facebook.getDrawFunction()));
@@ -475,15 +481,15 @@ App = function()
                         facebookObj.setPosition(-25, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(facebookObj, true);
 						
-						var youtube = new Sprite('images/yt_R.png', self.layers.front);
-						youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
-						var youtubeObj = new SceneObject(youtube);
-						youtubeObj.onMouseUp = function()
-						{
-							open('https://www.youtube.com/channel/UC_FZ9hdaRTOFAo-TBtc1fGw', '_blank');
-						};
-						youtubeObj.setPosition(25, -wade.getScreenHeight()/2 + 225);
-						wade.addSceneObject(youtubeObj, true);
+			var youtube = new Sprite('images/yt_R.png', self.layers.front);
+			youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
+			var youtubeObj = new SceneObject(youtube);
+			youtubeObj.onMouseUp = function()
+			{
+				open('https://www.youtube.com/channel/UC_FZ9hdaRTOFAo-TBtc1fGw', '_blank');
+			};
+			youtubeObj.setPosition(25, -wade.getScreenHeight()/2 + 225);
+			wade.addSceneObject(youtubeObj, true);
 
                         var twitter = new Sprite('images/t_R.png', self.layers.front);
                         twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
@@ -505,7 +511,7 @@ App = function()
                         imdbObj.setPosition(125, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(imdbObj, true);
 						
-						var linkedIn = new Sprite('images/li_R.png', self.layers.front);
+			var linkedIn = new Sprite('images/li_R.png', self.layers.front);
                         linkedIn.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, linkedIn.getDrawFunction()));
                         var linkedInObj = new SceneObject(linkedIn);
                         linkedInObj.onMouseUp = function()
@@ -517,7 +523,7 @@ App = function()
                     }
 
         // Add Messiah Studios link
-        var messiahStudiosLink = new TextSprite('https://github.com/MessiahStudios','42px ArtDept1', '#012c3d', 'center', this.layers.front);
+        var messiahStudiosLink = new TextSprite('https://github.com/MessiahStudios','35px ArtDept1', '#012c3d', 'center', this.layers.front);
         var msLink = new SceneObject(messiahStudiosLink);
         msLink.onMouseUp = function()
         {
@@ -776,6 +782,8 @@ App = function()
                     // Create share buttons if social flag set
                     if(self.socialEnabled)
                     {
+			/*
+  			//old social media outlet
                         var google = new Sprite('images/gp_R.png', self.layers.front);
                         google.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
                         var googleObj = new SceneObject(google);
@@ -785,16 +793,17 @@ App = function()
                         };
                         googleObj.setPosition(-225, wade.getScreenHeight()/2 - 225);
                         wade.addSceneObject(googleObj, true);
+			*/
 						
-						var instagram = new Sprite('images/inst_R.png', self.layers.front);
-						instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
-						var instagramObj = new SceneObject(instagram);
-						instagramObj.onMouseUp = function()
-						{
-							open('https://www.instagram.com/messiahstudios/?hl=en', '_blank');
-						};
-						instagramObj.setPosition(-175, wade.getScreenHeight()/2 - 225);
-						wade.addSceneObject(instagramObj, true);
+			var instagram = new Sprite('images/inst_R.png', self.layers.front);
+			instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
+			var instagramObj = new SceneObject(instagram);
+			instagramObj.onMouseUp = function()
+			{
+				open('https://www.instagram.com/messiahstudios/?hl=en', '_blank');
+			};
+			instagramObj.setPosition(-175, wade.getScreenHeight()/2 - 225);
+			wade.addSceneObject(instagramObj, true);
 
                         var facebook = new Sprite('images/fb_R.png', self.layers.front);
                         facebook.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, facebook.getDrawFunction()));
@@ -806,15 +815,15 @@ App = function()
                         facebookObj.setPosition(-125, wade.getScreenHeight()/2 - 225);
                         wade.addSceneObject(facebookObj, true);
 						
-						var youtube = new Sprite('images/yt_R.png', self.layers.front);
-						youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
-						var youtubeObj = new SceneObject(youtube);
-						youtubeObj.onMouseUp = function()
-						{
-							open('https://www.youtube.com/channel/UC_FZ9hdaRTOFAo-TBtc1fGw', '_blank');
-						};
-						youtubeObj.setPosition(-75, wade.getScreenHeight()/2 - 225);
-						wade.addSceneObject(youtubeObj, true);
+			var youtube = new Sprite('images/yt_R.png', self.layers.front);
+			youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
+			var youtubeObj = new SceneObject(youtube);
+			youtubeObj.onMouseUp = function()
+			{
+				open('https://www.youtube.com/channel/UC_FZ9hdaRTOFAo-TBtc1fGw', '_blank');
+			};
+			youtubeObj.setPosition(-75, wade.getScreenHeight()/2 - 225);
+			wade.addSceneObject(youtubeObj, true);
 
                         var twitter = new Sprite('images/t_R.png', self.layers.front);
                         twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
