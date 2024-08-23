@@ -138,9 +138,11 @@ App = function()
 
     // Loading
     this.loadingBar = function() {
+	    console.log('Loading bar function is called');
         // Check if all assets are loaded
         var loadingInterval = setInterval(function() {
             var percentage = wade.getLoadingPercentage();
+		console.log('Loading Percentage:', percentage);
 
             if (percentage >= 100) {
                 clearInterval(loadingInterval);
