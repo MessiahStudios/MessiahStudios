@@ -154,6 +154,7 @@ App = function()
 	// Enter main program
     this.init = function()
     {
+	wade.setLoadingBar(false);  // Hide the loading bar
         // Setup screen
         wade.setMinScreenSize(608, 920); //996
         wade.setMaxScreenSize(608, 920); //996
