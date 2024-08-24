@@ -55,7 +55,7 @@ const FILES_TO_CACHE = [
   '/divine-gems-game/images/fiveEffect.png',
   '/divine-gems-game/images/fiveEffect2.png',
   '/divine-gems-game/images/flash.png',
-  '/divine-gems-game/images/gp_R.png',
+  '/divine-gems-game/images/gh_R.png',
   '/divine-gems-game/images/imdb_R.png',
   '/divine-gems-game/images/installButton.png',
   '/divine-gems-game/images/inst_R.png',
