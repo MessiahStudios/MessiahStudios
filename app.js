@@ -452,17 +452,18 @@ App = function()
                         };
                         vlogObj.setPosition(-175, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(vlogObj, true);
+			*/
 						
-                        var google = new Sprite('images/gp_R.png', self.layers.front);
+                        var github = new Sprite('images/gh_R.png', self.layers.front);
                         google.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
-                        var googleObj = new SceneObject(google);
+                        var githubObj = new SceneObject(google);
                         googleObj.onMouseUp = function()
                         {
-                            open('https://plus.google.com/u/1/+MessiahStudiosNet/', '_blank');
+                            open('https://github.com/MessiahStudios', '_blank');
                         };
-                        googleObj.setPosition(-125, -wade.getScreenHeight()/2 + 225);
-                        wade.addSceneObject(googleObj, true);
-			*/
+                        githubObj.setPosition(-125, -wade.getScreenHeight()/2 + 225);
+                        wade.addSceneObject(githubObj, true);
+			
 						
 			var instagram = new Sprite('images/inst_R.png', self.layers.front);
 			instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
@@ -524,16 +525,17 @@ App = function()
                         linkedInObj.setPosition(175, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(linkedInObj, true);
                     }
-
-        // Add Messiah Studios link
-        var messiahStudiosLink = new TextSprite('https://github.com/MessiahStudios','35px ArtDept1', '#012c3d', 'center', this.layers.front);
-        var msLink = new SceneObject(messiahStudiosLink);
-        msLink.onMouseUp = function()
+	/*
+        // using icon instead
+        var gameEngine = new TextSprite('Powered By Wade Game Engine','35px ArtDept1', '#012c3d', 'center', this.layers.front);
+        var geLink = new SceneObject(gameEngine);
+        geLink.onMouseUp = function()
         {
-            open('https://github.com/MessiahStudios');
+            open('https://clockworkchilli.com/');
         };
-        msLink.setPosition(0, -55);
+        geLink.setPosition(0, -55);
         wade.addSceneObject(msLink, true);
+	*/
 
         var specialThanks = new TextSprite('Additional Credits','48px ArtDept1', '#3fb7e3', 'center', this.layers.front);
         specialThanks.setShadow('#000000', 3, 4, 4);
