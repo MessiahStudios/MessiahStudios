@@ -380,13 +380,14 @@ App = function()
                 };
                 youtubeObj.setPosition(-wade.getScreenWidth()/2 + 230, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(youtubeObj, true);
-
+		    
+		// Twitter now X
                 var twitter = new Sprite('images/x_R.png', self.layers.front);
                 twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
                 var twitterObj = new SceneObject(twitter);
                 twitterObj.onMouseUp = function()
                 {
-                    open('https://twitter.com/share?url=https://messiahstudios.github.io/divine-gems-game/&via=Messiah_Studios&text=Finally%20Finished%20New%20Match%203%20Game%20%23Divine%20%23Gems%20%23HTML5', '_blank');
+                    open('https://x.com/Messiah_Studios', '_blank');
                 };
                 twitterObj.setPosition(-wade.getScreenWidth()/2 + 285, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(twitterObj, true);
