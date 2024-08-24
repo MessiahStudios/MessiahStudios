@@ -394,7 +394,9 @@ App = function()
         }));
         wade.addSceneObject(playButton, true);
 
-        // Create wade icon
+        /*
+	// Wade Powered icon
+	// after reading official docs I can add powered by "WADE Game Engine" in my credits section
         var wadeSprite = new Sprite('images/wadePowered.png', self.layers.front);
         var wadeObj = new SceneObject(wadeSprite);
         wadeObj.setPosition(wade.getScreenWidth()/2 - wadeSprite.getSize().x/2, wade.getScreenHeight()/2 - wadeSprite.getSize().y/2);
@@ -403,6 +405,7 @@ App = function()
             open('http://www.clockworkchilli.com');
         };
         wade.addSceneObject(wadeObj, true);
+	*/
     };
 
     /**
