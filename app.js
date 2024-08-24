@@ -86,7 +86,7 @@ App = function()
         wade.loadImage('images/christian_arabic_symbol_new.png');
         wade.loadImage('images/crown_object_new.png');
         wade.loadImage('images/fish_symbol_new.png');
-		wade.loadImage('images/nails_object_new.png');
+	wade.loadImage('images/nails_object_new.png');
         wade.loadImage('images/selected.png');
         //wade.loadImage('images/special4.png');
         wade.loadImage('images/special5-lion.png');
@@ -94,7 +94,7 @@ App = function()
         wade.loadImage('images/christian_arabic_symbol_glow.png');
         wade.loadImage('images/crown_object_glow.png');
         wade.loadImage('images/fish_symbol_glow.png');
-		wade.loadImage('images/nails_object_glow.png');
+	wade.loadImage('images/nails_object_glow.png');
 
         // UI and background
         wade.loadImage('images/background.png');
@@ -125,7 +125,7 @@ App = function()
         wade.loadImage('images/flash.png');
 
         // Share
-        //wade.loadImage('images/gp_R.png'); //legacy social media outlet
+        wade.loadImage('images/gh_R.png'); //legacy social media outlet
         wade.loadImage('images/fb_R.png');
         wade.loadImage('images/x_R.png');
 	wade.loadImage('images/inst_R.png');
