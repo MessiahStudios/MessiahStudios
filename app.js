@@ -339,7 +339,7 @@ App = function()
             if(self.socialEnabled)
             {
 		var github = new Sprite('images/gh_R.png', self.layers.front);
-                github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
+                github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, github.getDrawFunction()));
                 var githubObj = new SceneObject(github);
                 githubObj.onMouseUp = function()
                 {
@@ -453,7 +453,7 @@ App = function()
 			*/
 						
                         var github = new Sprite('images/gh_R.png', self.layers.front);
-                        github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
+                        github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, github.getDrawFunction()));
                         var githubObj = new SceneObject(github);
                         githubObj.onMouseUp = function()
                         {
