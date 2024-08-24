@@ -356,7 +356,7 @@ App = function()
                 var instagramObj = new SceneObject(instagram);
                 instagramObj.onMouseUp = function()
                 {
-                    open('https://www.instagram.com/messiahstudios/?hl=en', '_blank');
+                    open('https://www.instagram.com/jaguarsjiujitsu/', '_blank');
                 };
                 instagramObj.setPosition(-wade.getScreenWidth()/2 + 120, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(instagramObj, true);
@@ -471,7 +471,7 @@ App = function()
 			var instagramObj = new SceneObject(instagram);
 			instagramObj.onMouseUp = function()
 			{
-				open('https://www.instagram.com/messiahstudios/?hl=en', '_blank');
+				open('https://www.instagram.com/jaguarsjiujitsu/', '_blank');
 			};
 			instagramObj.setPosition(-75, -wade.getScreenHeight()/2 + 225);
 			wade.addSceneObject(instagramObj, true);
@@ -501,7 +501,7 @@ App = function()
                         var twitterObj = new SceneObject(twitter);
                         twitterObj.onMouseUp = function()
                         {
-                            open('https://twitter.com/Messiah_Studios', '_blank');
+                            open('https://x.com/Messiah_Studios', '_blank');
                         };
                         twitterObj.setPosition(75, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(twitterObj, true);
