@@ -127,7 +127,7 @@ App = function()
         // Share
         //wade.loadImage('images/gp_R.png'); //legacy social media outlet
         wade.loadImage('images/fb_R.png');
-        wade.loadImage('images/t_R.png');
+        wade.loadImage('images/x_R.png');
 	wade.loadImage('images/inst_R.png');
 	wade.loadImage('images/yt_R.png');
 	//wade.loadImage('images/vlog_R.png'); //legacy social media outlet
@@ -381,7 +381,7 @@ App = function()
                 youtubeObj.setPosition(-wade.getScreenWidth()/2 + 230, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(youtubeObj, true);
 
-                var twitter = new Sprite('images/t_R.png', self.layers.front);
+                var twitter = new Sprite('images/x_R.png', self.layers.front);
                 twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
                 var twitterObj = new SceneObject(twitter);
                 twitterObj.onMouseUp = function()
@@ -491,7 +491,7 @@ App = function()
 			youtubeObj.setPosition(25, -wade.getScreenHeight()/2 + 225);
 			wade.addSceneObject(youtubeObj, true);
 
-                        var twitter = new Sprite('images/t_R.png', self.layers.front);
+                        var twitter = new Sprite('images/x_R.png', self.layers.front);
                         twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
                         var twitterObj = new SceneObject(twitter);
                         twitterObj.onMouseUp = function()
@@ -825,7 +825,7 @@ App = function()
 			youtubeObj.setPosition(-75, wade.getScreenHeight()/2 - 225);
 			wade.addSceneObject(youtubeObj, true);
 
-                        var twitter = new Sprite('images/t_R.png', self.layers.front);
+                        var twitter = new Sprite('images/x_R.png', self.layers.front);
                         twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
                         var twitterObj = new SceneObject(twitter);
                         twitterObj.onMouseUp = function()
