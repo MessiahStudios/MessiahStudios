@@ -72,7 +72,7 @@ const FILES_TO_CACHE = [
   '/divine-gems-game/images/special4.png',
   '/divine-gems-game/images/special5-lion.png',
   '/divine-gems-game/images/specialEffect1.png',
-  '/divine-gems-game/images/t_R.png',
+  '/divine-gems-game/images/x_R.png',
   '/divine-gems-game/images/top.png',
   '/divine-gems-game/images/topWithScore.png',
   '/divine-gems-game/images/trinity_object_glow.png',
