@@ -340,7 +340,7 @@ App = function()
             {
 		var github = new Sprite('images/gh_R.png', self.layers.front);
                 github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
-                var githubObj = new SceneObject(google);
+                var githubObj = new SceneObject(github);
                 githubObj.onMouseUp = function()
                 {
                 	open('https://github.com/MessiahStudios', '_blank');
@@ -453,9 +453,9 @@ App = function()
 			*/
 						
                         var github = new Sprite('images/gh_R.png', self.layers.front);
-                        google.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
-                        var githubObj = new SceneObject(google);
-                        googleObj.onMouseUp = function()
+                        github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
+                        var githubObj = new SceneObject(github);
+                        githubObj.onMouseUp = function()
                         {
                             open('https://github.com/MessiahStudios', '_blank');
                         };
@@ -803,7 +803,7 @@ App = function()
 			var instagramObj = new SceneObject(instagram);
 			instagramObj.onMouseUp = function()
 			{
-				open('https://www.instagram.com/messiahstudios/?hl=en', '_blank');
+				open('https://www.instagram.com/jaguarsjiujitsu/', '_blank');
 			};
 			instagramObj.setPosition(-175, wade.getScreenHeight()/2 - 225);
 			wade.addSceneObject(instagramObj, true);
