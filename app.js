@@ -338,20 +338,17 @@ App = function()
             // Create share buttons if social flag set
             if(self.socialEnabled)
             {
-		/*
-  		//old social media outlet
-                var google = new Sprite('images/gp_R.png', self.layers.front);
-                google.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
-                var googleObj = new SceneObject(google);
-                googleObj.onMouseUp = function()
+		var github = new Sprite('images/gh_R.png', self.layers.front);
+                github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
+                var githubObj = new SceneObject(google);
+                githubObj.onMouseUp = function()
                 {
-                    open('https://plus.google.com/share?url=https://messiahstudios.github.io/divine-gems-game/', '_blank');
+                	open('https://github.com/MessiahStudios', '_blank');
                 };
-                googleObj.setPosition(-wade.getScreenWidth()/2 + 65, wade.getScreenHeight()/2 - 75);
-                wade.addSceneObject(googleObj, true);
-		*/
+                githubObj.setPosition(-125, -wade.getScreenHeight()/2 + 225);
+                wade.addSceneObject(githubObj, true);
 				
-				var instagram = new Sprite('images/inst_R.png', self.layers.front);
+		var instagram = new Sprite('images/inst_R.png', self.layers.front);
                 instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
                 var instagramObj = new SceneObject(instagram);
                 instagramObj.onMouseUp = function()
@@ -371,7 +368,7 @@ App = function()
                 facebookObj.setPosition(-wade.getScreenWidth()/2 + 175, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(facebookObj, true);
 				
-				var youtube = new Sprite('images/yt_R.png', self.layers.front);
+		var youtube = new Sprite('images/yt_R.png', self.layers.front);
                 youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
                 var youtubeObj = new SceneObject(youtube);
                 youtubeObj.onMouseUp = function()
