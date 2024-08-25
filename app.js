@@ -345,7 +345,7 @@ App = function()
                 {
                 	open('https://github.com/MessiahStudios', '_blank');
                 };
-                githubObj.setPosition(-wade.getScreenWidth()/2 + 60, wade.getScreenHeight()/2 - 75);
+                githubObj.setPosition(-wade.getScreenWidth()/2 + 65, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(githubObj, true);
 				
 		var instagram = new Sprite('images/inst_R.png', self.layers.front);
