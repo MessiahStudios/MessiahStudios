@@ -14,6 +14,7 @@ This new version was created with the Wade Game Engine (HTML5).
 ![GitHubScreenShotGamePlay](https://user-images.githubusercontent.com/11281253/175720511-ff5492ec-c756-4f0d-8f6d-95cc140f435e.png)
 
 ## Back For More
+![GitHubScreenShot](https://github.com/MessiahStudios/divine-gems-game/blob/main/images/Divine_Gems_New_Look.png)
 
 <a href="https://messiahstudios.github.io/divine-gems-game/" target="_blank">https://messiahstudios.github.io/divine-gems-game/</a> (<-- Click Link To Play)
 
