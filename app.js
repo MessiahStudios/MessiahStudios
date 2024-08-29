@@ -532,7 +532,7 @@ App = function()
             open('https://clockworkchilli.com/');
         };
         geLink.setPosition(0, -55);
-        wade.addSceneObject(msLink, true);
+        wade.addSceneObject(geLink, true);
 	
 
         var specialThanks = new TextSprite('Additional Credits','48px ArtDept1', '#3fb7e3', 'center', this.layers.front);
