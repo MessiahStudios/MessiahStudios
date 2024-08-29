@@ -523,7 +523,7 @@ App = function()
                         linkedInObj.setPosition(175, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(linkedInObj, true);
                     }
-	/*
+	
         // using icon instead
         var gameEngine = new TextSprite('Powered By Wade Game Engine','35px ArtDept1', '#012c3d', 'center', this.layers.front);
         var geLink = new SceneObject(gameEngine);
@@ -533,7 +533,7 @@ App = function()
         };
         geLink.setPosition(0, -55);
         wade.addSceneObject(msLink, true);
-	*/
+	
 
         var specialThanks = new TextSprite('Additional Credits','48px ArtDept1', '#3fb7e3', 'center', this.layers.front);
         specialThanks.setShadow('#000000', 3, 4, 4);
