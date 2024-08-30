@@ -501,12 +501,12 @@ var handleSpecialFiveInteraction = function(square1, square2) {
         columnsLocked[i] = true;
     }
 
-    // Play special sound effect
+    // Play the unique sound effect for the specialFive interaction
     if (!wade.app.soundMuted && self.specialFiveSound) {
         wade.playAudioIfAvailable(self.specialFiveSound);
     }
 
-    // Remove all game pieces
+    // Remove all game pieces and trigger the existing specialFive explosion effect
     for (var i = 0; i < self.numCells.x; i++) {
         for (var j = 0; j < self.numCells.y; j++) {
             var piece = board[i][j];
@@ -514,16 +514,11 @@ var handleSpecialFiveInteraction = function(square1, square2) {
                 piece.remove = true;
                 check.push(piece);
 
-                // Create an effect for each piece
+                // Reuse the existing explosion effect for each piece
                 createExplosion(piece.getPosition());
             }
         }
     }
-
-    // Create a special effect at the center of the swap
-    var centerX = (square1.getPosition().x + square2.getPosition().x) / 2;
-    var centerY = (square1.getPosition().y + square2.getPosition().y) / 2;
-    createSpecialFiveEffect({ x: centerX, y: centerY });
 
     // Trigger any necessary game events or score updates
     wade.app.onSpecialFiveInteraction && wade.app.onSpecialFiveInteraction();
@@ -535,31 +530,6 @@ var handleSpecialFiveInteraction = function(square1, square2) {
         }
         update();
     }, 1000); // Adjust the delay as needed
-};
-
-/**
- * Creates a special effect for the specialFive interaction
- * @param {Object} position The position to create the effect
- */
-var createSpecialFiveEffect = function(position) {
-    // This is a placeholder. You can create a more elaborate effect here.
-    var specialEffect = new SceneObject(new Sprite(null, self.topLayer));
-    specialEffect.partOfMatch3 = true;
-    specialEffect.setPosition(position.x, position.y);
-
-    // Create a large, colorful explosion effect
-    var explosionSprite = new Sprite(null, self.topLayer);
-    var explosionAnim = new Animation('specialFiveExplosion', 8, 8, 30, false); // Adjust these parameters
-    explosionSprite.addAnimation('explode', explosionAnim);
-    explosionSprite.setSize(self.cellSize.x * 4, self.cellSize.y * 4); // Make it larger
-    specialEffect.addSprite(explosionSprite);
-
-    specialEffect.onAnimationEnd = function() {
-        wade.removeSceneObject(this);
-    };
-
-    wade.addSceneObject(specialEffect, true);
-    specialEffect.playAnimation('explode');
 };
 
     /**
