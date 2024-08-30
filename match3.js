@@ -18,6 +18,7 @@ Match3 = function()
     this.matchSound = ' ';
     this.explosionSound = ' ';
     this.specialFiveSound = ' ';
+    this.specialFiveLionsAtWAR = ' ';
     this.explosionAnimation = {};
     this.sparkleAnimation = {};
     this.splashAnimation = {};
@@ -66,6 +67,7 @@ Match3 = function()
         parameters && parameters.match3 && parameters.match3.matchSound && (this.matchSound = parameters.match3.matchSound);
         parameters && parameters.match3 && parameters.match3.explosionSound && (this.explosionSound = parameters.match3.explosionSound);
         parameters && parameters.match3 && parameters.match3.specialFiveSound && (this.specialFiveSound = parameters.match3.specialFiveSound);
+	parameters && parameters.match3 && parameters.match3.specialFiveLionsAtWAR && (this.specialFiveLionsAtWAR = parameters.match3.specialFiveLionsAtWAR);
         parameters && parameters.match3 && parameters.match3.explosionAnimation && (this.explosionAnimation = parameters.match3.explosionAnimation);
         parameters && parameters.match3 && parameters.match3.sparkleAnimation && (this.sparkleAnimation = parameters.match3.sparkleAnimation);
         parameters && parameters.match3 && parameters.match3.splashAnimation && (this.splashAnimation = parameters.match3.splashAnimation);
@@ -502,8 +504,8 @@ var handleSpecialFiveInteraction = function(square1, square2) {
     }
 
     // Play the unique sound effect for the specialFive interaction
-    if (!wade.app.soundMuted && self.specialFiveSound) {
-        wade.playAudioIfAvailable(self.specialFiveSound);
+    if (!wade.app.soundMuted && self.specialFiveLionsAtWAR) {
+        wade.playAudioIfAvailable(self.specialFiveLionsAtWAR);
     }
 
     // Remove all game pieces and trigger the existing specialFive explosion effect
