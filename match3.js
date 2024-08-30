@@ -367,144 +367,200 @@ Match3 = function()
 
     };
 
-    /**
-     * Swaps the position of 2 adjacent squares
-     * @param {square} square1 the first square
-     * @param {square} square2 the square that needs to swap locations with the first square
-     * @param {boolean} check check for matches once the swap is complete
-     */
-    var swap = function(square1, square2, checkForMatches)
-    {
-        if (!square1 || !square2 || columnsLocked[square1.col] || columnsLocked[square2.col])
-        {
-            return false;
+/**
+ * Swaps the position of 2 adjacent squares
+ * @param {square} square1 the first square
+ * @param {square} square2 the square that needs to swap locations with the first square
+ * @param {boolean} check check for matches once the swap is complete
+ */
+var swap = function(square1, square2, checkForMatches) {
+    if (!square1 || !square2 || columnsLocked[square1.col] || columnsLocked[square2.col]) {
+        return false;
+    }
+
+    // Only try to swap if selected squares are adjacent
+    if (!adjacent(square1, square2)) {
+        return false;
+    }
+
+    // Check if both squares are specialFive
+    if (square1.isSpecialFive && square2.isSpecialFive) {
+        handleSpecialFiveInteraction(square1, square2);
+        return true;
+    }
+
+    if (square1.isSpecialFive || square2.isSpecialFive) {
+        for (var i = 0; i < columnsLocked.length; i++) {
+            // Lock all the columns
+            columnsLocked[i] = true;
         }
+        deadChilliWalking = true;
+    }
 
-        // Only try to swap if selected squares are adjacent
-        if(!adjacent(square1, square2))
-        {
-            return false;
-        }
+    // Temporary variables
+    var square1LocationCol = square1.col;
+    var square1LocationRow = square1.row;
+    var square2LocationCol = square2.col;
+    var square2LocationRow = square2.row;
 
-        if(square1.isSpecialFive || square2.isSpecialFive)
-        {
-            for(var i=0; i<columnsLocked.length; i++)
-            {
-                // Lock all the columns
-                columnsLocked[i] = true;
-            }
-            deadChilliWalking = true;
-        }
+    // Swap the locations
+    var square1Position = square1.getPosition();
+    var square2Position = square2.getPosition();
+    board[square1.col][square1.row] = square2;
+    board[square2.col][square2.row] = square1;
 
-        // Temporary variables
-        var square1LocationCol = square1.col;
-        var square1LocationRow = square1.row;
-        var square2LocationCol = square2.col;
-        var square2LocationRow = square2.row;
+    square1.col = square2LocationCol;
+    square1.row = square2LocationRow;
+    square2.col = square1LocationCol;
+    square2.row = square1LocationRow;
 
-        // Swap the locations
-        var square1Position = square1.getPosition();
-        var square2Position = square2.getPosition();
-        board[square1.col][square1.row] = square2;
-        board[square2.col][square2.row] = square1;
+    // Apply the swap
+    square1.moveTo(square2Position.x, square2Position.y, 300);
+    square2.moveTo(square1Position.x, square1Position.y, 300);
+    square1.moving = true;
+    square2.moving = true;
 
-        square1.col = square2LocationCol;
-        square1.row = square2LocationRow;
-        square2.col = square1LocationCol;
-        square2.row = square1LocationRow;
+    // Lock columns
+    columnsLocked[square1.col] = true;
+    columnsLocked[square2.col] = true;
 
-        // Apply the swap
-        square1.moveTo(square2Position.x, square2Position.y, 300);
-        square2.moveTo(square1Position.x, square1Position.y, 300);
-        square1.moving = true;
-        square2.moving = true;
+    if (!checkForMatches) {
+        return; // Do not check for matches if flag is false
+    }
 
-        // Lock columns
-        columnsLocked[square1.col] = true;
-        columnsLocked[square2.col] = true;
+    // Check for matches as a result of swap
+    var numMoveCompleted = 0;
+    square1.onMoveComplete = square2.onMoveComplete = function() {
+        if (++numMoveCompleted == 2) {
+            square1.moving = square2.moving = false;
+            columnsLocked[square1.col] = false;
+            columnsLocked[square2.col] = false;
 
-        if(!checkForMatches)
-        {
-            return; // Do not check for matches if flag is false
-        }
+            // Now need to do all match checks and swap back if there are none
+            var anyMatches = false;
 
-        // Check for matches as a result of swap
-        var numMoveCompleted = 0;
-        square1.onMoveComplete = square2.onMoveComplete = function()
-        {
-            if (++numMoveCompleted == 2)
-            {
-                square1.moving = square2.moving = false;
-                columnsLocked[square1.col] = false;
-                columnsLocked[square2.col] = false;
+            anyMatches = getMatches(square1) ? true : anyMatches;
+            anyMatches = getMatches(square2) ? true : anyMatches;
 
-                // Now need to do all match checks and swap back if there are none
-                var anyMatches = false;
+            // Handle special case of specialFive
+            if (square1.isSpecialFive || square2.isSpecialFive) {
+                var square = square1.isSpecialFive ? square1 : square2;
+                var type = square1.isSpecialFive ? square2.type : square1.type;
 
-                anyMatches = getMatches(square1) ? true : anyMatches;
-                anyMatches = getMatches(square2) ? true : anyMatches;
+                if (!wade.app.soundMuted && self.specialFiveSound) {
+                    wade.playAudioIfAvailable(self.specialFiveSound);
+                }
+                square.remove = true;
+                for (var i = 0; i < self.numCells.x; i++) {
+                    for (var j = 0; j < self.numCells.y; j++) {
+                        var objectToRemove = board[i][j];
+                        check.push(objectToRemove);
+                        if (objectToRemove && objectToRemove.type == type) {
+                            objectToRemove.fivePos = { x: square.getPosition().x, y: square.getPosition().y };
+                            objectToRemove.remove = true;
 
-                // Can I handle special case of 5 here or not
-                if(square1.isSpecialFive || square2.isSpecialFive)
-                {
-                    var square = square1.isSpecialFive ? square1 : square2;
-                    var type = square1.isSpecialFive ? square2.type : square1.type;
-
-                    if(!wade.app.soundMuted && self.specialFiveSound)
-                    {
-                        wade.playAudioIfAvailable(self.specialFiveSound);
-                    }
-                    square.remove = true;
-                    for(var i=0; i<self.numCells.x; i++)
-                    {
-                        for(var j=0; j<self.numCells.y; j++)
-                        {
-                            var objectToRemove = board[i][j];
-                            check.push(objectToRemove);
-                            if(objectToRemove && objectToRemove.type == type)
-                            {
-                                //objectToRemove.beam = true;
-                                objectToRemove.fivePos = {x:square.getPosition().x, y:square.getPosition().y};
-                                objectToRemove.remove = true;
-
-                                var beam = createBeam(objectToRemove);
-                            }
+                            var beam = createBeam(objectToRemove);
                         }
                     }
-                    if (beam)
-                    {
-                        wade.setMainLoopCallback(null, 'update');
-                        beam.onAnimationEnd = function()
-                        {
-                            wade.removeSceneObject(this);
-                            wade.setMainLoopCallback(update,'update');
-                        };
-                    }
-
                 }
-
-                // If move is illegal, swap back
-                if (!anyMatches)
-                {
-                    if(!square1.isSpecialFive && !square2.isSpecialFive)
-                    {
-                        swap(square1, square2, false);
-                    }
+                if (beam) {
+                    wade.setMainLoopCallback(null, 'update');
+                    beam.onAnimationEnd = function() {
+                        wade.removeSceneObject(this);
+                        wade.setMainLoopCallback(update, 'update');
+                    };
                 }
-                else
-                {
-                    check.pushUnique(square1);
-                    check.pushUnique(square2);
-                }
-
-                // After everything, restore on move complete - THIS MIGHT NEED TO GO ABOVE SOMEWHERE
-                square1.onMoveComplete = square2.onMoveComplete = function ()
-                {
-                    this.moving = false;
-                };
             }
-        };
+
+            // If move is illegal, swap back
+            if (!anyMatches) {
+                if (!square1.isSpecialFive && !square2.isSpecialFive) {
+                    swap(square1, square2, false);
+                }
+            } else {
+                check.pushUnique(square1);
+                check.pushUnique(square2);
+            }
+
+            // After everything, restore on move complete
+            square1.onMoveComplete = square2.onMoveComplete = function() {
+                this.moving = false;
+            };
+        }
     };
+};
+
+/**
+ * Handles the interaction between two specialFive game pieces
+ * @param {Object} square1 The first specialFive square
+ * @param {Object} square2 The second specialFive square
+ */
+var handleSpecialFiveInteraction = function(square1, square2) {
+    // Lock all columns
+    for (var i = 0; i < columnsLocked.length; i++) {
+        columnsLocked[i] = true;
+    }
+
+    // Play special sound effect
+    if (!wade.app.soundMuted && self.specialFiveSound) {
+        wade.playAudioIfAvailable(self.specialFiveSound);
+    }
+
+    // Remove all game pieces
+    for (var i = 0; i < self.numCells.x; i++) {
+        for (var j = 0; j < self.numCells.y; j++) {
+            var piece = board[i][j];
+            if (piece) {
+                piece.remove = true;
+                check.push(piece);
+
+                // Create an effect for each piece
+                createExplosion(piece.getPosition());
+            }
+        }
+    }
+
+    // Create a special effect at the center of the swap
+    var centerX = (square1.getPosition().x + square2.getPosition().x) / 2;
+    var centerY = (square1.getPosition().y + square2.getPosition().y) / 2;
+    createSpecialFiveEffect({ x: centerX, y: centerY });
+
+    // Trigger any necessary game events or score updates
+    wade.app.onSpecialFiveInteraction && wade.app.onSpecialFiveInteraction();
+
+    // Schedule the board refill
+    setTimeout(function() {
+        for (var i = 0; i < self.numCells.x; i++) {
+            columnsLocked[i] = false;
+        }
+        update();
+    }, 1000); // Adjust the delay as needed
+};
+
+/**
+ * Creates a special effect for the specialFive interaction
+ * @param {Object} position The position to create the effect
+ */
+var createSpecialFiveEffect = function(position) {
+    // This is a placeholder. You can create a more elaborate effect here.
+    var specialEffect = new SceneObject(new Sprite(null, self.topLayer));
+    specialEffect.partOfMatch3 = true;
+    specialEffect.setPosition(position.x, position.y);
+
+    // Create a large, colorful explosion effect
+    var explosionSprite = new Sprite(null, self.topLayer);
+    var explosionAnim = new Animation('specialFiveExplosion', 8, 8, 30, false); // Adjust these parameters
+    explosionSprite.addAnimation('explode', explosionAnim);
+    explosionSprite.setSize(self.cellSize.x * 4, self.cellSize.y * 4); // Make it larger
+    specialEffect.addSprite(explosionSprite);
+
+    specialEffect.onAnimationEnd = function() {
+        wade.removeSceneObject(this);
+    };
+
+    wade.addSceneObject(specialEffect, true);
+    specialEffect.playAnimation('explode');
+};
 
     /**
      * A function that determines if 2 squares are adjacent
