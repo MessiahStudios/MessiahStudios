@@ -77,6 +77,7 @@ App = function()
         {
             wade.loadAudio('sounds/PowerUp8.ogg');
             wade.loadAudio('sounds/fiveSound-lion.ogg');
+	    wade.loadAudio('sounds/fiveSound-lionAtWAR.ogg');
             wade.loadAudio('sounds/Explosion3.ogg');
         }
 
@@ -258,6 +259,7 @@ App = function()
                 matchSound: 'sounds/PowerUp8.ogg',
                 explosionSound: 'sounds/Explosion3.ogg',
                 specialFiveSound: 'sounds/fiveSound-lion.ogg',
+		specialFiveLionsAtWAR: 'sounds/fiveSound-lionAtWAR.ogg',
                 itemLayer: self.layers.board,
                 bottomLayer: self.layers.boardBack,
                 topLayer: self.layers.boardFront,
