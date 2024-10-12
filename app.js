@@ -218,10 +218,12 @@ App = function()
         playButton.onMouseUp = function()
         {
 	// Initialize AudioContext when the play button is clicked
-            if (!self.audioContext) {
+            if (!self.audioContext || self.audioContext.state === 'suspended') {
 		try {
                 self.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-		console.log("AudioContext initialized after user interaction.");
+		self.audioContext.resume().then(() => {
+			console.log("AudioContext resumed after user interaction.");
+		});
 		} catch (e) {
                     console.error("Web Audio API is not supported in this browser.");
 		}
@@ -573,36 +575,23 @@ App = function()
 
         var muteButton = new SceneObject(muteSprite);
         muteButton.removeOnGameOver = true;
-        muteButton.onMouseDown = function()
-        {
+        muteButton.onMouseDown = function() {
             self.musicMuted = !self.musicMuted;
-            if(self.musicMuted)
-            {
-                if(self.musicPlaying)
-                {
+		
+            if(self.musicMuted) {
+                if(self.musicPlaying) {
+		    wade.stopAudio(self.musicSource);
+		    self.musicSource = null;
                     self.musicPlaying = false;
-                    wade.stopAudio(self.musicSource);
                     muteSprite.setImageFile('images/buttonSoundOff.png');
                 }
-                else
-                {
-                    self.musicMuted = !self.musicMuted;
-                }
-
-            }
-            else
-            {
-                if(!self.musicPlaying)
-                {
+	    } else {
+                if(!self.musicPlaying) {
+		    self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
                     self.musicPlaying = true;
-                    self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
                     muteSprite.setImageFile('images/buttonSoundOn.png');
                 }
-                else
-                {
-                    self.musicMuted = !self.musicMuted;
-                }
-            }
+	    }
         };
         muteButton.setPosition(200, wade.getScreenHeight()/2 - muteSprite.getSize().y/2);
         wade.addSceneObject(muteButton, true);
@@ -728,8 +717,12 @@ App = function()
     this.onGameOver = function()
     {
         this.gameOver = false;
-        self.musicPlaying = false;
-        wade.stopAudio(self.musicSource);
+	    // Force music to stop (playing or not)
+	if (self.musicSource) {
+	    wade.stopAudio(self.musicSource);
+	    self.musicSource = null;
+	    self.musicPlaying = false;
+	}
 
         // Create explosion sound
         if(!wade.app.soundMuted)
