@@ -492,48 +492,69 @@ var swap = function(square1, square2, checkForMatches) {
     };
 };
 
-/**
- * Handles the interaction between two specialFive game pieces
- * @param {Object} square1 The first specialFive square
- * @param {Object} square2 The second specialFive square
- */
-var handleSpecialFiveInteraction = function(square1, square2) {
-    // Lock all columns
-    for (var i = 0; i < columnsLocked.length; i++) {
-        columnsLocked[i] = true;
-    }
+    /**
+     * Handles the interaction between two specialFive game pieces
+     * @param {Object} square1 The first specialFive square
+     * @param {Object} square2 The second specialFive square
+     */
+    var handleSpecialFiveInteraction = function(square1, square2) {
+        // Lock all columns
+        for (var i = 0; i < columnsLocked.length; i++) {
+            columnsLocked[i] = true;
+        }
 
-    // Play the unique sound effect for the specialFive interaction
-    if (!wade.app.soundMuted && self.specialFiveLionsAtWAR) {
-        wade.playAudioIfAvailable(self.specialFiveLionsAtWAR);
-    }
+        // Play the unique sound effect for the specialFive interaction
+        if (!wade.app.soundMuted && self.specialFiveLionsAtWAR) {
+            wade.playAudioIfAvailable(self.specialFiveLionsAtWAR);
+        }
 
-    // Remove all game pieces and trigger the existing specialFive explosion effect
-    for (var i = 0; i < self.numCells.x; i++) {
-        for (var j = 0; j < self.numCells.y; j++) {
-            var piece = board[i][j];
-            if (piece) {
-                piece.remove = true;
-                check.push(piece);
+        // Calculate the center of the swap
+        var centerX = (square1.getPosition().x + square2.getPosition().x) / 2;
+        var centerY = (square1.getPosition().y + square2.getPosition().y) / 2;
 
-                // Reuse the existing explosion effect for each piece
-                createExplosion(piece.getPosition());
+        // Remove all game pieces and trigger the existing specialFive beam effect for each
+        var delay = 0;
+        var delayIncrement = 50; // Adjust this value to change the speed of the cascade
+
+        for (var i = 0; i < self.numCells.x; i++) {
+            for (var j = 0; j < self.numCells.y; j++) {
+                var piece = board[i][j];
+                if (piece) {
+                    // Calculate distance from center to determine delay
+                    var distance = Math.sqrt(Math.pow(piece.getPosition().x - centerX, 2) + Math.pow(piece.getPosition().y - centerY, 2));
+                    delay = distance * delayIncrement;
+
+                    setTimeout((function(p) {
+                        return function() {
+                            p.remove = true;
+                            check.push(p);
+
+                            // Create the beam effect for this piece
+                            p.fivePos = { x: centerX, y: centerY }; // Set the beam origin to the swap center
+                            createBeam(p);
+
+                            // Play a sound for each piece (optional)
+                            if (!wade.app.soundMuted && self.specialFiveSound) {
+                                wade.playAudioIfAvailable(self.specialFiveSound);
+                            }
+                        };
+                    })(piece), delay);
+                }
             }
         }
-    }
 
-    // Trigger any necessary game events or score updates
-    wade.app.onSpecialFiveInteraction && wade.app.onSpecialFiveInteraction();
+        // Trigger any necessary game events or score updates
+        wade.app.onSpecialFiveInteraction && wade.app.onSpecialFiveInteraction();
 
-    // Schedule the board refill
-    setTimeout(function() {
-        for (var i = 0; i < self.numCells.x; i++) {
-            columnsLocked[i] = false;
-        }
-        update();
-    }, 1000); // Adjust the delay as needed
-};
-
+        // Schedule the board refill
+        setTimeout(function() {
+            for (var i = 0; i < self.numCells.x; i++) {
+                columnsLocked[i] = false;
+            }
+            update();
+        }, delay + 1000); // Adjust the delay as needed
+    };
+	
     /**
      * A function that determines if 2 squares are adjacent
      * @param {square} square1 first square
@@ -623,11 +644,9 @@ var handleSpecialFiveInteraction = function(square1, square2) {
      * @param list
      * @returns {boolean}
      */
-    var handleMatch = function(square ,match)
-    {
+    var handleMatch = function(square, match) {
         var length = match.length;
-        if(length < 3)
-        {
+        if (length < 3) {
             return false; // No matches
         }
 
@@ -635,91 +654,86 @@ var handleSpecialFiveInteraction = function(square1, square2) {
         wade.app.onMatch && wade.app.onMatch(match);
 
         // Add time
-        pointsPopup(square.getPosition(),100*length);
+        pointsPopup(square.getPosition(), 100 * length);
 
         // Standard match of 3
-        if(length == 3)
-        {
-            for(j=0; j<3; j++)
-            {
-                match[j].deathEffect = {type:'splash'};
+        if (length == 3) {
+            for (j = 0; j < 3; j++) {
+                match[j].deathEffect = { type: 'splash' };
                 match[j].remove = true;
             }
             matchSoundPlaying = true;
         }
-
         // Match of 4
-        else if(length == 4)
-        {
+        else if (length == 4) {
             matchSoundPlaying = true;
 
-            for(var j=0; j<3; j++) // Do not remove the fourth, instead it will turn into a special gem
+            for (var j = 0; j < 3; j++) // Do not remove the fourth, instead it will turn into a special gem
             {
-                match[j].deathEffect = {type:'splash'};
+                match[j].deathEffect = { type: 'splash' };
                 match[j].remove = true;
             }
             match[3].isSpecialFour = true;
             match[3].specialFourLocked = true; // Needed to prevent a match with special 4 in same frame
             var glowSprite = new Sprite(match[3].typeSpecial, self.bottomLayer);
-            glowSprite.setSize(self.cellSize.x-self.margin, self.cellSize.y-self.margin);
-            glowSprite.setDrawFunction(wade.drawFunctions.resizePeriodically_(self.cellSize.x-self.margin, self.cellSize.y-self.margin, self.cellSize.x + self.glowSize-self.margin, self.cellSize.y + self.glowSize-self.margin, 0.4, glowSprite.getDrawFunction()));
+            glowSprite.setSize(self.cellSize.x - self.margin, self.cellSize.y - self.margin);
+            glowSprite.setDrawFunction(wade.drawFunctions.resizePeriodically_(self.cellSize.x - self.margin, self.cellSize.y - self.margin, self.cellSize.x + self.glowSize - self.margin, self.cellSize.y + self.glowSize - self.margin, 0.4, glowSprite.getDrawFunction()));
             match[3].addSprite(glowSprite);
-            if(self.specialFourAnimation)
-            {
+            if (self.specialFourAnimation) {
                 var lineFourAnim = new Animation(self.specialFourAnimation.name, self.specialFourAnimation.numCellsX, self.specialFourAnimation.numCellsY, self.specialFourAnimation.speed, self.specialFourAnimation.looping);
                 var lineFourSprite = new Sprite(null, self.itemLayer); // Behind squares
                 lineFourSprite.addAnimation('dazzle', lineFourAnim);
-                lineFourSprite.setSize(self.cellSize.x-self.margin, self.cellSize.y-self.margin);
-                match[3].addSprite(lineFourSprite, {x:0, y:5});
+                lineFourSprite.setSize(self.cellSize.x - self.margin, self.cellSize.y - self.margin);
+                match[3].addSprite(lineFourSprite, { x: 0, y: 5 });
                 match[3].playAnimation('dazzle', 'ping-pong');
             }
-
         }
         else // Must be a match of 5 or greater
         {
             matchSoundPlaying = true;
-            for(j=0; j<match.length-1; j++) // Do not remove the fourth, instead it will turn into a special gem
+            for (j = 0; j < match.length - 1; j++) // Do not remove the last one, instead it will turn into a special gem
             {
-                match[j].deathEffect = {type:'splash'};
+                match[j].deathEffect = { type: 'splash' };
                 match[j].remove = true;
             }
 
-            match[match.length-1].removeAllSprites();
+            match[match.length - 1].removeAllSprites();
             var fiveSprite = new Sprite(self.specialFive, self.itemLayer);
-            fiveSprite.setSize(self.cellSize.x-self.margin, self.cellSize.y-self.margin);
-            match[match.length-1].addSprite(fiveSprite);
-            match[match.length-1].isSpecialFive = true;
-            match[match.length-1].type = 'special5';
-			specialFiveSoundPlaying = true;
+            fiveSprite.setSize(self.cellSize.x - self.margin, self.cellSize.y - self.margin);
+            match[match.length - 1].addSprite(fiveSprite);
+            match[match.length - 1].isSpecialFive = true;
+            match[match.length - 1].type = 'special5';
+            specialFiveSoundPlaying = true;
+
+            // Check if there's already a specialFive in the match
+            var existingSpecialFive = match.find(piece => piece.isSpecialFive && piece !== match[match.length - 1]);
+            if (existingSpecialFive) {
+                // If there's an existing specialFive, trigger the specialFive interaction
+                handleSpecialFiveInteraction(existingSpecialFive, match[match.length - 1]);
+                return true; // End the function here as handleSpecialFiveInteraction will handle the rest
+            }
         }
 
         // Handle special case, a special 4 item is involved in the swap
-        for(j=0; j<match.length; j++)
-        {
-            if(match[j].isSpecialFour)
-            {
+        for (j = 0; j < match.length; j++) {
+            if (match[j].isSpecialFour) {
                 // We have a special 4 involved in the match, it must explode and remove the others with it
-                if(match[j].specialFourLocked)
-                {
+                if (match[j].specialFourLocked) {
                     continue;
                 }
                 explosionSoundPlaying = true;
 
                 // Remove all around
-                for(var a=-1; a<2; a++)
-                {
-                    for(var b=-1; b<2; b++)
-                    {
-                        if(board[match[j].col+a] && board[match[j].col+a][match[j].row+b] && !columnsLocked[match[j].col+a] && !board[match[j].col+a][match[j].row+b].moving)
-                        {
+                for (var a = -1; a < 2; a++) {
+                    for (var b = -1; b < 2; b++) {
+                        if (board[match[j].col + a] && board[match[j].col + a][match[j].row + b] && !columnsLocked[match[j].col + a] && !board[match[j].col + a][match[j].row + b].moving) {
                             // If not in templist, add to array and flag for removal
-                            if(match.indexOf(board[match[j].col+a][match[j].row+b]) == -1)
-                            {
-                                match.push(board[match[j].col+a][match[j].row+b]);
-                                board[match[j].col+a][match[j].row+b].remove = true;
+                            if (match.indexOf(board[match[j].col + a][match[j].row + b]) == -1) {
+                                match.push(board[match[j].col + a][match[j].row + b]);
+                                board[match[j].col + a][match[j].row + b].remove = true;
                             }
                             // Flag all to explode
-                            board[match[j].col+a][match[j].row+b].deathEffect = {type:'explode'}; // If already in list still must explode
+                            board[match[j].col + a][match[j].row + b].deathEffect = { type: 'explode' }; // If already in list still must explode
                         }
                     }
                 }
