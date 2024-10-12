@@ -534,7 +534,7 @@ App = function()
         var geLink = new SceneObject(gameEngine);
         geLink.onMouseUp = function()
         {
-            open('https://clockworkchilli.com/');
+            open('https://clockworkchilli.com/', '_blank');
         };
         geLink.setPosition(0, -55);
         wade.addSceneObject(geLink, true);
@@ -552,7 +552,7 @@ App = function()
         var soundObject = new SceneObject(soundLink);
         soundObject.onMouseUp = function()
         {
-            open('http://www.soundimage.org');
+            open('http://www.soundimage.org', '_blank');
         };
         soundObject.setPosition(0, 300);
         wade.addSceneObject(textObject);
@@ -627,11 +627,17 @@ App = function()
         var menuSprite = new Sprite('images/buttonBack.png', self.layers.front);
         var menuObject = new SceneObject(menuSprite);
         menuObject.removeOnGameOver = true;
-        menuObject.onMouseUp = function()
-        {
+        menuObject.onMouseUp = function(){
+	    // Stop music when returning to the main menu
+	    if (self.musicPlaying) {
+		wade.stopAudio(self.musicSource);  // Stop any playing music
+		self.musicSource = null;  // Clear the music source
+		self.musicPlaying = false;  // Update music state
+	    }
+		
             wade.setMainLoopCallback(null,'update');
-            wade.stopAudio(self.musicSource);
             wade.clearScene(); // Clear the scene
+		
             if(pauseButton.paused)
             {
                 wade.resumeSimulation();
