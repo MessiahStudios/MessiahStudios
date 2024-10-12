@@ -229,12 +229,13 @@ App = function()
 		}
 	    }
 
-            wade.clearScene();
-            if(!self.musicMuted)
-            {
+	    if(!self.musicMuted && !self.musicPlaying) {
                 self.musicPlaying = true;
                 self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
             }
+
+            wade.clearScene();
+
 
             // Draw background and foreground
             var backgroundSprite = new Sprite('images/background.png', self.layers.background);
@@ -714,11 +715,10 @@ App = function()
     /**
      * Gets called by match 3 logic on game over condition
      */
-    this.onGameOver = function()
-    {
+    this.onGameOver = function() {
         this.gameOver = false;
 	    // Force music to stop (playing or not)
-	if (self.musicSource) {
+	if (self.musicPlaying && self.musicSource) {
 	    wade.stopAudio(self.musicSource);
 	    self.musicSource = null;
 	    self.musicPlaying = false;
