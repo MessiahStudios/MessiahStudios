@@ -101,4 +101,4 @@ function Counter()
         });
     };
 }
-//@ sourceURL=counter.js
+//# sourceURL=counter.js
