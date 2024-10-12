@@ -848,7 +848,7 @@ App = function()
 
 };
 
-//@ sourceURL=app.js
+//# sourceURL=app.js
 // Start the app
 var app = new App();
 app.loadingBar();  // Start the loading process
