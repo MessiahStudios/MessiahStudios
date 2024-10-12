@@ -8,6 +8,7 @@ const FILES_TO_CACHE = [
   '/divine-gems-game/style.css',
   '/divine-gems-game/bar.js',
   '/divine-gems-game/counter.js',
+  '/divine-gems-game/favicon.ico', // Added this line
   '/divine-gems-game/match3.js',
   '/divine-gems-game/jquery-1.11.1.min.js',
   '/divine-gems-game/wade.ifx_1.0.js',
