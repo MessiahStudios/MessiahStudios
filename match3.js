@@ -1250,4 +1250,4 @@ var swap = function(square1, square2, checkForMatches) {
     };
 };
 
-//@ sourceURL=match.js
+//# sourceURL=match.js
