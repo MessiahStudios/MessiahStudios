@@ -14,7 +14,26 @@ App = function()
 
     // Scores
     this.scores = {values:[0,0,0]};
-
+	/**
+ * Potential Solution to have a function that controls the music
+ * Music kept playing even after Game Over was intiated
+ */
+    this.playMusic = function(){
+	    if (!self.musicPlaying && ! self.musicMuted) {
+		    self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
+		    self.musicPlaying = true;
+		    console.log("Music started")
+	    }
+    };
+    this.stopMusic = function(){
+	    if (self.musicPlaying && self.musicSource) {
+				wade.stopAudio(self.musicSource);
+				self.musicSource = null;
+				self.musicPlaying = false;
+				console.log("Music stopped");
+			}
+    };
+	
     /**
      * Function that takes a number of seconds and returns a string of the time in minutes
      * @param {number} numSeconds The number of seconds that we will convert
@@ -219,21 +238,14 @@ App = function()
         {
 	// Initialize AudioContext when the play button is clicked
             if (!self.audioContext || self.audioContext.state === 'suspended') {
-		try {
+							try {
                 self.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-		self.audioContext.resume().then(() => {
-			console.log("AudioContext resumed after user interaction.");
-		});
-		} catch (e) {
-                    console.error("Web Audio API is not supported in this browser.");
-		}
-	    }
-
-	    if(!self.musicMuted && !self.musicPlaying) {
-                self.musicPlaying = true;
-                self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
-            }
-
+								self.audioContext.resume().then(() => console.log("AudioContext resumed after user interaction."));
+							} catch (e) {
+								console.error("Web Audio API is not supported in this browser.");
+							}
+						}
+						self.playMusic();
             wade.clearScene();
 
 
@@ -578,21 +590,14 @@ App = function()
         muteButton.removeOnGameOver = true;
         muteButton.onMouseDown = function() {
             self.musicMuted = !self.musicMuted;
-		
-            if(self.musicMuted) {
-                if(self.musicPlaying) {
-		    wade.stopAudio(self.musicSource);
-		    self.musicSource = null;
-                    self.musicPlaying = false;
-                    muteSprite.setImageFile('images/buttonSoundOff.png');
-                }
-	    } else {
-                if(!self.musicPlaying) {
-		    self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
-                    self.musicPlaying = true;
-                    muteSprite.setImageFile('images/buttonSoundOn.png');
-                }
-	    }
+						
+						if (self.musicMuted) {
+							self.stopMusic();  // Stop music if muted
+							muteSprite.setImageFile('images/buttonSoundOff.png');
+						} else {
+							self.playMusic();  // Play music if unmuted
+							muteSprite.setImageFile('images/buttonSoundOn.png');
+						}
         };
         muteButton.setPosition(200, wade.getScreenHeight()/2 - muteSprite.getSize().y/2);
         wade.addSceneObject(muteButton, true);
@@ -627,13 +632,11 @@ App = function()
         var menuSprite = new Sprite('images/buttonBack.png', self.layers.front);
         var menuObject = new SceneObject(menuSprite);
         menuObject.removeOnGameOver = true;
-        menuObject.onMouseUp = function(){
-	    // Stop music when returning to the main menu
-	    if (self.musicPlaying) {
-		wade.stopAudio(self.musicSource);  // Stop any playing music
-		self.musicSource = null;  // Clear the music source
-		self.musicPlaying = false;  // Update music state
-	    }
+        menuObject.onMouseUp = function() {
+					self.stopMusic();
+					wade.clearScene();
+					self.game();
+				}
 		
             wade.setMainLoopCallback(null,'update');
             wade.clearScene(); // Clear the scene
@@ -722,20 +725,19 @@ App = function()
      * Gets called by match 3 logic on game over condition
      */
     this.onGameOver = function() {
-        this.gameOver = false;
-	    // Force music to stop (playing or not)
-	if (self.musicPlaying && self.musicSource) {
-	    wade.stopAudio(self.musicSource);
-	    self.musicSource = null;
-	    self.musicPlaying = false;
-	}
-
+        this.gameOver = true;
+				self.stopMusic();
+				if (!self.soundMuted) {
+						wade.playAudioIfAvailable('sounds/Explosion3.ogg')
+				}
+				/*
+		*commenting out for new audio solution
         // Create explosion sound
         if(!wade.app.soundMuted)
         {
             wade.playAudioIfAvailable('sounds/Explosion3.ogg');
         }
-
+				*/
         // Get previous best scores
         var scoresObj = wade.retrieveLocalObject("match3Scores");
         if(scoresObj)
