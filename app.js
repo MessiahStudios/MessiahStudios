@@ -14,26 +14,7 @@ App = function()
 
     // Scores
     this.scores = {values:[0,0,0]};
-	/**
- * Potential Solution to have a function that controls the music
- * Music kept playing even after Game Over was intiated
- */
-    this.playMusic = function(){
-	    if (!self.musicPlaying && ! self.musicMuted) {
-		    self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
-		    self.musicPlaying = true;
-		    console.log("Music started")
-	    }
-    };
-    this.stopMusic = function(){
-	    if (self.musicPlaying && self.musicSource) {
-				wade.stopAudio(self.musicSource);
-				self.musicSource = null;
-				self.musicPlaying = false;
-				console.log("Music stopped");
-			}
-    };
-	
+
     /**
      * Function that takes a number of seconds and returns a string of the time in minutes
      * @param {number} numSeconds The number of seconds that we will convert
@@ -74,9 +55,9 @@ App = function()
     // Load all assets
     this.load = function()
     {
-	    // Set a stack of loading images
+        // Set a stack of loading images
         wade.setLoadingImages(['images/divineGemsTitle.png']);
-        
+
         // Optionally, display a loading bar
         wade.setLoadingBar(true, {x: 0, y: 150}, '#000000', '#ffffff');
 
@@ -96,7 +77,7 @@ App = function()
         {
             wade.loadAudio('sounds/PowerUp8.ogg');
             wade.loadAudio('sounds/fiveSound-lion.ogg');
-	    wade.loadAudio('sounds/fiveSound-lionAtWAR.ogg');
+        wade.loadAudio('sounds/fiveSound-lionAtWAR.ogg');
             wade.loadAudio('sounds/Explosion3.ogg');
         }
 
@@ -106,7 +87,7 @@ App = function()
         wade.loadImage('images/christian_arabic_symbol_new.png');
         wade.loadImage('images/crown_object_new.png');
         wade.loadImage('images/fish_symbol_new.png');
-	wade.loadImage('images/nails_object_new.png');
+    wade.loadImage('images/nails_object_new.png');
         wade.loadImage('images/selected.png');
         //wade.loadImage('images/special4.png');
         wade.loadImage('images/special5-lion.png');
@@ -114,7 +95,7 @@ App = function()
         wade.loadImage('images/christian_arabic_symbol_glow.png');
         wade.loadImage('images/crown_object_glow.png');
         wade.loadImage('images/fish_symbol_glow.png');
-	wade.loadImage('images/nails_object_glow.png');
+    wade.loadImage('images/nails_object_glow.png');
 
         // UI and background
         wade.loadImage('images/background.png');
@@ -148,36 +129,36 @@ App = function()
         wade.loadImage('images/gh_R.png'); //legacy social media outlet
         wade.loadImage('images/fb_R.png');
         wade.loadImage('images/x_R.png');
-	wade.loadImage('images/inst_R.png');
-	wade.loadImage('images/yt_R.png');
-	//wade.loadImage('images/vlog_R.png'); //legacy social media outlet
-	wade.loadImage('images/imdb_R.png');
-	wade.loadImage('images/li_R.png');
+    wade.loadImage('images/inst_R.png');
+    wade.loadImage('images/yt_R.png');
+    //wade.loadImage('images/vlog_R.png'); //legacy social media outlet
+    wade.loadImage('images/imdb_R.png');
+    wade.loadImage('images/li_R.png');
 
     };
 
     // Loading
     this.loadingBar = function() {
-	    console.log('Loading bar function is called');
+        console.log('Loading bar function is called');
         // Check if all assets are loaded
         var loadingInterval = setInterval(function() {
             var percentage = wade.getLoadingPercentage();
-		console.log('Loading Percentage:', percentage);
+        console.log('Loading Percentage:', percentage);
 
             if (percentage >= 100) {
                 clearInterval(loadingInterval);
                 wade.setLoadingBar(false);  // Hide the loading bar
-		document.getElementById('__wade_loading_bar').style.display = 'none';
+        document.getElementById('__wade_loading_bar').style.display = 'none';
                 self.init();  // Proceed to game initialization
             }
         }, 100);  // Check every 100ms
 
         this.load();  // Start loading assets
     };
-	// Enter main program
+    // Enter main program
     this.init = function()
     {
-	wade.setLoadingBar(false);  // Hide the loading bar
+    wade.setLoadingBar(false);  // Hide the loading bar
         // Setup screen
         wade.setMinScreenSize(608, 920); //996
         wade.setMaxScreenSize(608, 920); //996
@@ -219,13 +200,13 @@ App = function()
         var backgroundSprite = new Sprite('images/menuBackground.png', this.layers.boardBack);
         var menu = new SceneObject(backgroundSprite);
         wade.addSceneObject(menu, true);
-		var titleSprite = new TextSprite('Divine Gems','84px ArtDept1', '#3fb7e3', 'center', this.layers.front);
+        var titleSprite = new TextSprite('Divine Gems','84px ArtDept1', '#3fb7e3', 'center', this.layers.front);
         titleSprite.setShadow('#000000', 3, 4, 4);
         //textObject.addSprite(titleSprite, {x:0, y: -460});
-		//Original | Start
+        //Original | Start
         //var titleSprite = new Sprite('images/dgTitle.png', this.layers.board);
         menu.addSprite(titleSprite, {x: 0, y:-wade.getScreenHeight()/2 + 100});
-		//end
+        //end
         var dgtSprite = new Sprite('images/divineGemsTitle.png', this.layers.board);
         menu.addSprite(dgtSprite, {x:0, y:-130});
         var shareBackSprite = new Sprite('images/backgroundShareBox.png', wade.app.layers.front);
@@ -236,16 +217,23 @@ App = function()
         var playButton = new SceneObject(playButtonSprite);
         playButton.onMouseUp = function()
         {
-	// Initialize AudioContext when the play button is clicked
+    // Initialize AudioContext when the play button is clicked
             if (!self.audioContext || self.audioContext.state === 'suspended') {
-							try {
+        try {
                 self.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-								self.audioContext.resume().then(() => console.log("AudioContext resumed after user interaction."));
-							} catch (e) {
-								console.error("Web Audio API is not supported in this browser.");
-							}
-						}
-						self.playMusic();
+        self.audioContext.resume().then(() => {
+            console.log("AudioContext resumed after user interaction.");
+        });
+        } catch (e) {
+                    console.error("Web Audio API is not supported in this browser.");
+        }
+        }
+
+        if(!self.musicMuted && !self.musicPlaying) {
+                self.musicPlaying = true;
+                self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
+            }
+
             wade.clearScene();
 
 
@@ -269,12 +257,12 @@ App = function()
                     {normal: 'images/christian_arabic_symbol_new.png', special:'images/christian_arabic_symbol_glow.png', probability:25},
                     {normal: 'images/crown_object_new.png', special:'images/crown_object_glow.png', probability:25},
                     {normal: 'images/fish_symbol_new.png', special:'images/fish_symbol_glow.png', probability:25},
-					{normal: 'images/nails_object_new.png', special:'images/nails_object_glow.png', probability:25}],
+                    {normal: 'images/nails_object_new.png', special:'images/nails_object_glow.png', probability:25}],
                 specialFive: 'images/special5-lion.png',
                 matchSound: 'sounds/PowerUp8.ogg',
                 explosionSound: 'sounds/Explosion3.ogg',
                 specialFiveSound: 'sounds/fiveSound-lion.ogg',
-		specialFiveLionsAtWAR: 'sounds/fiveSound-lionAtWAR.ogg',
+        specialFiveLionsAtWAR: 'sounds/fiveSound-lionAtWAR.ogg',
                 itemLayer: self.layers.board,
                 bottomLayer: self.layers.boardBack,
                 topLayer: self.layers.boardFront,
@@ -355,17 +343,17 @@ App = function()
             // Create share buttons if social flag set
             if(self.socialEnabled)
             {
-		var github = new Sprite('images/gh_R.png', self.layers.front);
+        var github = new Sprite('images/gh_R.png', self.layers.front);
                 github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, github.getDrawFunction()));
                 var githubObj = new SceneObject(github);
                 githubObj.onMouseUp = function()
                 {
-                	open('https://github.com/MessiahStudios', '_blank');
+                    open('https://github.com/MessiahStudios', '_blank');
                 };
                 githubObj.setPosition(-wade.getScreenWidth()/2 + 65, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(githubObj, true);
-				
-		var instagram = new Sprite('images/inst_R.png', self.layers.front);
+
+        var instagram = new Sprite('images/inst_R.png', self.layers.front);
                 instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
                 var instagramObj = new SceneObject(instagram);
                 instagramObj.onMouseUp = function()
@@ -380,12 +368,12 @@ App = function()
                 var facebookObj = new SceneObject(facebook);
                 facebookObj.onMouseUp = function()
                 {
-					open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmessiahstudios.github.io%2Fdivine-gems-game%2F&amp;src=sdkpreparse');
+                    open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmessiahstudios.github.io%2Fdivine-gems-game%2F&amp;src=sdkpreparse');
                 };
                 facebookObj.setPosition(-wade.getScreenWidth()/2 + 175, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(facebookObj, true);
-				
-		var youtube = new Sprite('images/yt_R.png', self.layers.front);
+
+        var youtube = new Sprite('images/yt_R.png', self.layers.front);
                 youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
                 var youtubeObj = new SceneObject(youtube);
                 youtubeObj.onMouseUp = function()
@@ -394,8 +382,8 @@ App = function()
                 };
                 youtubeObj.setPosition(-wade.getScreenWidth()/2 + 230, wade.getScreenHeight()/2 - 75);
                 wade.addSceneObject(youtubeObj, true);
-		    
-		// Twitter now X
+
+        // Twitter now X
                 var twitter = new Sprite('images/x_R.png', self.layers.front);
                 twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
                 var twitterObj = new SceneObject(twitter);
@@ -410,8 +398,8 @@ App = function()
         wade.addSceneObject(playButton, true);
 
         /*
-	// Wade Powered icon
-	// after reading official docs I can add powered by "WADE Game Engine" in my credits section
+    // Wade Powered icon
+    // after reading official docs I can add powered by "WADE Game Engine" in my credits section
         var wadeSprite = new Sprite('images/wadePowered.png', self.layers.front);
         var wadeObj = new SceneObject(wadeSprite);
         wadeObj.setPosition(wade.getScreenWidth()/2 - wadeSprite.getSize().x/2, wade.getScreenHeight()/2 - wadeSprite.getSize().y/2);
@@ -420,7 +408,7 @@ App = function()
             open('http://www.clockworkchilli.com');
         };
         wade.addSceneObject(wadeObj, true);
-	*/
+    */
     };
 
     /**
@@ -452,13 +440,13 @@ App = function()
         var textObject = new SceneObject(theMSCred);
         textObject.addSprite(workTitles, {x:-275, y: 75});
         textObject.setPosition(0, -wade.getScreenHeight()/2 + 80);
-		
-		// Create share buttons if social flag set
+
+        // Create share buttons if social flag set
                     if(self.socialEnabled)
                     {
-			/*
-  			//old social media outlet
-			var vlog = new Sprite('images/vlog_R.png', self.layers.front);
+            /*
+            //old social media outlet
+            var vlog = new Sprite('images/vlog_R.png', self.layers.front);
                         vlog.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, vlog.getDrawFunction()));
                         var vlogObj = new SceneObject(vlog);
                         vlogObj.onMouseUp = function()
@@ -467,8 +455,8 @@ App = function()
                         };
                         vlogObj.setPosition(-175, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(vlogObj, true);
-			*/
-						
+            */
+
                         var github = new Sprite('images/gh_R.png', self.layers.front);
                         github.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, github.getDrawFunction()));
                         var githubObj = new SceneObject(github);
@@ -478,17 +466,17 @@ App = function()
                         };
                         githubObj.setPosition(-125, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(githubObj, true);
-			
-						
-			var instagram = new Sprite('images/inst_R.png', self.layers.front);
-			instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
-			var instagramObj = new SceneObject(instagram);
-			instagramObj.onMouseUp = function()
-			{
-				open('https://www.instagram.com/jaguarsjiujitsu/', '_blank');
-			};
-			instagramObj.setPosition(-75, -wade.getScreenHeight()/2 + 225);
-			wade.addSceneObject(instagramObj, true);
+
+
+            var instagram = new Sprite('images/inst_R.png', self.layers.front);
+            instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
+            var instagramObj = new SceneObject(instagram);
+            instagramObj.onMouseUp = function()
+            {
+                open('https://www.instagram.com/jaguarsjiujitsu/', '_blank');
+            };
+            instagramObj.setPosition(-75, -wade.getScreenHeight()/2 + 225);
+            wade.addSceneObject(instagramObj, true);
 
                         var facebook = new Sprite('images/fb_R.png', self.layers.front);
                         facebook.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, facebook.getDrawFunction()));
@@ -499,16 +487,16 @@ App = function()
                         };
                         facebookObj.setPosition(-25, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(facebookObj, true);
-						
-			var youtube = new Sprite('images/yt_R.png', self.layers.front);
-			youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
-			var youtubeObj = new SceneObject(youtube);
-			youtubeObj.onMouseUp = function()
-			{
-				open('https://www.youtube.com/channel/UC_FZ9hdaRTOFAo-TBtc1fGw', '_blank');
-			};
-			youtubeObj.setPosition(25, -wade.getScreenHeight()/2 + 225);
-			wade.addSceneObject(youtubeObj, true);
+
+            var youtube = new Sprite('images/yt_R.png', self.layers.front);
+            youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
+            var youtubeObj = new SceneObject(youtube);
+            youtubeObj.onMouseUp = function()
+            {
+                open('https://www.youtube.com/channel/UC_FZ9hdaRTOFAo-TBtc1fGw', '_blank');
+            };
+            youtubeObj.setPosition(25, -wade.getScreenHeight()/2 + 225);
+            wade.addSceneObject(youtubeObj, true);
 
                         var twitter = new Sprite('images/x_R.png', self.layers.front);
                         twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
@@ -519,8 +507,8 @@ App = function()
                         };
                         twitterObj.setPosition(75, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(twitterObj, true);
-						
-						var imdb = new Sprite('images/imdb_R.png', self.layers.front);
+
+                        var imdb = new Sprite('images/imdb_R.png', self.layers.front);
                         imdb.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, imdb.getDrawFunction()));
                         var imdbObj = new SceneObject(imdb);
                         imdbObj.onMouseUp = function()
@@ -529,8 +517,8 @@ App = function()
                         };
                         imdbObj.setPosition(125, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(imdbObj, true);
-						
-			var linkedIn = new Sprite('images/li_R.png', self.layers.front);
+
+            var linkedIn = new Sprite('images/li_R.png', self.layers.front);
                         linkedIn.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, linkedIn.getDrawFunction()));
                         var linkedInObj = new SceneObject(linkedIn);
                         linkedInObj.onMouseUp = function()
@@ -540,7 +528,7 @@ App = function()
                         linkedInObj.setPosition(175, -wade.getScreenHeight()/2 + 225);
                         wade.addSceneObject(linkedInObj, true);
                     }
-	
+
         // using icon instead
         var gameEngine = new TextSprite('Powered By Wade Game Engine','35px ArtDept1', '#012c3d', 'center', this.layers.front);
         var geLink = new SceneObject(gameEngine);
@@ -550,7 +538,7 @@ App = function()
         };
         geLink.setPosition(0, -55);
         wade.addSceneObject(geLink, true);
-	
+
 
         var specialThanks = new TextSprite('Additional Credits','48px ArtDept1', '#3fb7e3', 'center', this.layers.front);
         specialThanks.setShadow('#000000', 3, 4, 4);
@@ -590,14 +578,21 @@ App = function()
         muteButton.removeOnGameOver = true;
         muteButton.onMouseDown = function() {
             self.musicMuted = !self.musicMuted;
-						
-						if (self.musicMuted) {
-							self.stopMusic();  // Stop music if muted
-							muteSprite.setImageFile('images/buttonSoundOff.png');
-						} else {
-							self.playMusic();  // Play music if unmuted
-							muteSprite.setImageFile('images/buttonSoundOn.png');
-						}
+
+            if(self.musicMuted) {
+                if(self.musicPlaying) {
+            wade.stopAudio(self.musicSource);
+            self.musicSource = null;
+                    self.musicPlaying = false;
+                    muteSprite.setImageFile('images/buttonSoundOff.png');
+                }
+        } else {
+                if(!self.musicPlaying) {
+            self.musicSource = wade.playAudio('sounds/Walperion-Music-Ode-to-Victory.ogg', true);
+                    self.musicPlaying = true;
+                    muteSprite.setImageFile('images/buttonSoundOn.png');
+                }
+        }
         };
         muteButton.setPosition(200, wade.getScreenHeight()/2 - muteSprite.getSize().y/2);
         wade.addSceneObject(muteButton, true);
@@ -632,15 +627,17 @@ App = function()
         var menuSprite = new Sprite('images/buttonBack.png', self.layers.front);
         var menuObject = new SceneObject(menuSprite);
         menuObject.removeOnGameOver = true;
-        menuObject.onMouseUp = function() {
-					self.stopMusic();
-					wade.clearScene();
-					self.game();
-				}
-		
+        menuObject.onMouseUp = function(){
+        // Stop music when returning to the main menu
+        if (self.musicPlaying) {
+        wade.stopAudio(self.musicSource);  // Stop any playing music
+        self.musicSource = null;  // Clear the music source
+        self.musicPlaying = false;  // Update music state
+        }
+
             wade.setMainLoopCallback(null,'update');
             wade.clearScene(); // Clear the scene
-		
+
             if(pauseButton.paused)
             {
                 wade.resumeSimulation();
@@ -725,19 +722,20 @@ App = function()
      * Gets called by match 3 logic on game over condition
      */
     this.onGameOver = function() {
-        this.gameOver = true;
-				self.stopMusic();
-				if (!self.soundMuted) {
-						wade.playAudioIfAvailable('sounds/Explosion3.ogg')
-				}
-				/*
-		*commenting out for new audio solution
+        this.gameOver = false;
+        // Force music to stop (playing or not)
+    if (self.musicPlaying && self.musicSource) {
+        wade.stopAudio(self.musicSource);
+        self.musicSource = null;
+        self.musicPlaying = false;
+    }
+
         // Create explosion sound
         if(!wade.app.soundMuted)
         {
             wade.playAudioIfAvailable('sounds/Explosion3.ogg');
         }
-				*/
+
         // Get previous best scores
         var scoresObj = wade.retrieveLocalObject("match3Scores");
         if(scoresObj)
@@ -788,8 +786,8 @@ App = function()
                     // Create share buttons if social flag set
                     if(self.socialEnabled)
                     {
-			/*
-  			//old social media outlet
+            /*
+            //old social media outlet
                         var google = new Sprite('images/gp_R.png', self.layers.front);
                         google.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, google.getDrawFunction()));
                         var googleObj = new SceneObject(google);
@@ -799,17 +797,17 @@ App = function()
                         };
                         googleObj.setPosition(-225, wade.getScreenHeight()/2 - 225);
                         wade.addSceneObject(googleObj, true);
-			*/
-						
-			var instagram = new Sprite('images/inst_R.png', self.layers.front);
-			instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
-			var instagramObj = new SceneObject(instagram);
-			instagramObj.onMouseUp = function()
-			{
-				open('https://www.instagram.com/jaguarsjiujitsu/', '_blank');
-			};
-			instagramObj.setPosition(-175, wade.getScreenHeight()/2 - 225);
-			wade.addSceneObject(instagramObj, true);
+            */
+
+            var instagram = new Sprite('images/inst_R.png', self.layers.front);
+            instagram.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, instagram.getDrawFunction()));
+            var instagramObj = new SceneObject(instagram);
+            instagramObj.onMouseUp = function()
+            {
+                open('https://www.instagram.com/jaguarsjiujitsu/', '_blank');
+            };
+            instagramObj.setPosition(-175, wade.getScreenHeight()/2 - 225);
+            wade.addSceneObject(instagramObj, true);
 
                         var facebook = new Sprite('images/fb_R.png', self.layers.front);
                         facebook.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, facebook.getDrawFunction()));
@@ -820,16 +818,16 @@ App = function()
                         };
                         facebookObj.setPosition(-125, wade.getScreenHeight()/2 - 225);
                         wade.addSceneObject(facebookObj, true);
-						
-			var youtube = new Sprite('images/yt_R.png', self.layers.front);
-			youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
-			var youtubeObj = new SceneObject(youtube);
-			youtubeObj.onMouseUp = function()
-			{
-				open('https://www.youtube.com/channel/UC_FZ9hdaRTOFAo-TBtc1fGw', '_blank');
-			};
-			youtubeObj.setPosition(-75, wade.getScreenHeight()/2 - 225);
-			wade.addSceneObject(youtubeObj, true);
+
+            var youtube = new Sprite('images/yt_R.png', self.layers.front);
+            youtube.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, youtube.getDrawFunction()));
+            var youtubeObj = new SceneObject(youtube);
+            youtubeObj.onMouseUp = function()
+            {
+                open('https://www.youtube.com/channel/UC_FZ9hdaRTOFAo-TBtc1fGw', '_blank');
+            };
+            youtubeObj.setPosition(-75, wade.getScreenHeight()/2 - 225);
+            wade.addSceneObject(youtubeObj, true);
 
                         var twitter = new Sprite('images/x_R.png', self.layers.front);
                         twitter.setDrawFunction(wade.drawFunctions.fadeOpacity_(0, 1, 0.5, twitter.getDrawFunction()));
